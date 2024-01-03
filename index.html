@@ -1,0 +1,1089 @@
+<html lang="en">
+<head>
+<!doctype html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">  <title>Zulu Waterways</title>
+  <meta name="description" content="Zulu Waterways is a open community cruising guide">
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css' rel='stylesheet' />
+<link href='/js/main.css' rel='stylesheet' />
+<link rel="icon" type="image/x-icon" href="images/favicon.png">
+</head>
+<body style='width: 100%; height: 100%; margin: 0;background:black;'>
+<div id="searchbardiv" class="searchbarhidden">
+  <input type="text" name="search" onkeyup="doSearch()" autocomplete="off"><br>
+	<div id="searchOptions">
+		<div style="display:inline-block">
+			<label for="titlescheck"><input type="checkbox" id="titlescheck" name="titlescheck" Checked onchange="doSearch()">Titles</label>
+			<label for="tagsCheck"><input type="checkbox" id="tagsCheck" name="tagsCheck" onchange="doSearch()">Tags</label>
+			<label for="locsCheck"><input type="checkbox" id="locsCheck" name="locsCheck" onchange="doSearch()">Locations</label> || 
+		</div>
+		<div style="display:inline-block">
+			<label for="nearcheck"><input type="radio" id="nearcheck" name="searchWhere" title=" search 10km around me" onchange="doSearch()">Near Me</label>
+			<label for="osCheck"><input type="radio" id="osCheck" name="searchWhere" onchange="doSearch()">On Screen</label>
+			<label for="myCheck"><input type="radio" id="myCheck" name="searchWhere" onchange="doSearch()">My Markers</label>
+			<label for="evCheck"><input type="radio" id="evCheck" name="searchWhere" Checked onchange="doSearch()">Everywhere</label>
+		</div>
+	</div>
+	<ul id="searchTagsList"></ul>
+	<ul id="searchResults"></ul>
+	<div id="closeSearch" onClick="closeSearch()">&#10006;</div>
+</div>
+<div id='map' style='width: 100%; height: 100%; margin: 0'></div>
+<div id="latlondiv" onclick="copyLatLon()">0,0</div>
+<label class="fab-menu">
+  <input type="checkbox" class="checkhide">
+  <div class="menu-box">
+    <div class="menu-circle mainIcon"></div>
+    <ul class="menu-items">
+	  <li onclick="checkIOS()"><a href="https://play.google.com/store/apps/details?id=com.zulu.offline" target="_blank" >Offline</a></li>
+      <li onclick="showFilters()"><a>Filter</a></li>
+      <li onclick="showloginUI()" id="loginButton"><a>Login</a></li>
+      <li onclick="showMyMarkers()" id="myMarkersButton" style="display:none" ><a>My Markers</a></li>
+	  <li onclick="signOut()" id="signOutButton" style="display:none" ><a>Sign Out</a></li>
+      <li onclick="showSearch()"><a >Search</a></li>
+      <li onclick="showContact()"><a href="mailto:contact@zuluwaterways.com" target="_blank">Contact</a></li>
+      <li><a href="views/term.html" target="_blank">T&C/Privacy</a></li>
+      <li><a href="views/faq.html" target="_blank">FAQ</a></li>
+      <li><a href="https://www.youtube.com/channel/UCBv25JEsLSnNYgnL4ZQDfCA/videos">How to Videos</a></li>
+  </ul>
+  </div>
+</label>
+<label class="fab-menu" style="left:25px;z-index:2;">
+  <input type="checkbox" class="checkhide">
+  <div class="menu-box">
+    <div class="menu-circle layerIcon"></div>
+    <ul class="menu-items" style="right:-75px;">
+      <li onclick="showSat(this)" ><a>Satellite Maps</a></li>
+      <li onclick="changeMap('sat')" style="display:none; background:grey;" class="mapTypeButton"><a>Mapbox Maps</a></li>
+      <li onclick="changeMap('esri')" style="display:none" class="mapTypeButton"><a>ESRI Maps</a></li>
+      <li onclick="changeMap('bing')" style="display:none" class="mapTypeButton"><a>Bing Maps</a></li>
+      <li onclick="changeMap('coral')" style="display:none" class="mapTypeButton"><a>Coral Atlas</a></li>
+      <li onclick="showStreet(this)"><a>Street Maps</a></li>
+      <li onclick="changeMap('osm')" style="display:none" class="mapTypeButton"><a >WikiMaps</a></li>
+      <li onclick="changeMap('dark')" style="display:none" class="mapTypeButton"><a >Dark Maps</a></li>
+      <li onclick="changeMap('topo')" style="display:none")" class="mapTypeButton"><a>Topo Maps</a></li>
+      <li onclick="showCharts(this)"><a>Charts</a></li>
+	  <li onclick="changeMap('osc')" style="display:none" class="mapTypeButton"><a>Open Sea Maps</a></li>	
+      <li onclick="changeMap('noaa')" style="display:none" class="mapTypeButton" ><a >NOAA Charts</a></li>
+      <li onclick="changeMap('nz')" style="display:none" class="mapTypeButton"><a>NZ Charts</a></li>
+	  <li onclick="changeMap('hyd')" style="display:none" class="mapTypeButton"><a <a style="display:none">AUS Charts</a></li>
+	  <li onclick="changeMap('enc')" style="display:none" class="mapTypeButton"><a <a>AUS ENC</a></li>
+	  <li onclick="showAIS = !showAIS;loadIcons();this.style.background = showAIS?'grey':'';" style="display:none" class="mapTypeButton" id="aisButton"><a>AIS</a></li>	
+	  <li onclick="changeMap('ch')" style="display:none" class="mapTypeButton"><a style="display:none">ZU Charts</a></li>
+      <li onclick="changeMap('nav')" style="display:none" class="mapTypeButton" id="navcm"><a style="display:none">Navionics</a></li>	
+      
+
+  </ul>
+  </div>
+</label>
+<div class="navcont" style="display:none"></div>
+<div onclick="moveNorth()" id="northIcon">N</div>
+<div onclick="zoomLoc()" class="naviIcon"></div>
+<div onclick="showRetical()" class="fab-add"> </div>
+<div id="modalDiv" onclick="closeModal()">
+	<div id="loginModal" onclick="doNothing()"><div id='firebaseui-auth-container'></div></div>
+	<div id="changeNameModal" onclick="doNothing()"><div id='changenameDiv'><input id="newNameInput" placeholder="New User Name"><button onclick="doChangeUsername()">Save</button><br><br><button onclick="doDelete()"style="background-color:red;width:auto;padding:2px;">Delete Account</button></div></div>
+
+</div>
+<div class="sideButton filtersButton" onclick="showFilters()" style="right:5px;z-index:5;"></div>
+<div class="sideButton measureButton" onclick="toggleMeasure()"></div>
+<div class="measureShareButton sideButton" style="top:calc(50% + 60px);display:none;height:auto;" onclick="doShare(window.location.href)">Share</div>
+<div class="sideButton adminButton" onclick="toggleAdminFeed()" ></div>
+<div id="adminFeed" style="left:-500px;">
+	<ul id="adminFeedList"></ul>
+</div>
+<div id="exploreDiv" onclick="gotoRandom()"><a href="#" id="exploreLink">Explore!</a></div>
+<div id="onlineDiv"></div>
+<div id="filterList">
+	<ul onclick="changeFilter()" id="markerTypeList">
+<li id="selectAll"><input type="checkbox" id="filterSelectAllCheck"><span>Select All</span></li>
+<li id="58aba649b0fb4d1a34428dfa"><div class="a58aba649b0fb4d1a34428dfa"></div><span>Anchorage</span></li>
+<li id="58ad27c2a489a8326c16c746"><div class="a58ad27c2a489a8326c16c746"></div><span>Anchorage-Shallow Water</span></li>
+<li id="58ad27f5a489a8326c16c747"><div class="a58ad27f5a489a8326c16c747"></div><span>Anchorage-Short Stay</span></li>
+<li id="5f4307fd091b012f977176f5"><div class="a5f4307fd091b012f977176f5"></div><span>Anchorage-Unconfirmed</span></li>
+<li id="5d927cfb8d1c69415a36bbab"><div class="a5d927cfb8d1c69415a36bbab"></div><span>Bicycle track</span></li>
+<li id="58aba66bb0fb4d1a34428dfd"><div class="a58aba66bb0fb4d1a34428dfd"></div><span>Bins</span></li>
+<li id="58bf6a12848130142cd8a382"><div class="a58bf6a12848130142cd8a382"></div><span>Blog</span></li>
+<li id="58ad2877a489a8326c16c749"><div class="a58ad2877a489a8326c16c749"></div><span>Boat Ramp</span></li>
+<li id="58e61511ef98565ff8ccfe84"><div class="a58e61511ef98565ff8ccfe84"></div><span>Bridge</span></li>
+<li id="5a3079895f0fd678321a1764"><div class="a5a3079895f0fd678321a1764"></div><span>Bridge-Lifting</span></li>
+<li id="58ad2891a489a8326c16c74a"><div class="a58ad2891a489a8326c16c74a"></div><span>Camping</span></li>
+<li id="5d92930719cd4760431b4a67"><div class="a5d92930719cd4760431b4a67"></div><span>Careen-Mono</span></li>
+<li id="5d92934619cd4760431b4a68"><div class="a5d92934619cd4760431b4a68"></div><span>Careen-Multi</span></li>
+<li id="5bb4acebaa62a013b68039d9"><div class="a5bb4acebaa62a013b68039d9"></div><span>Chandlery</span></li>
+<li id="5a9cd44cf6faf80f19d63d2c"><div class="a5a9cd44cf6faf80f19d63d2c"></div><span>Charity</span></li>
+<li id="5b3ac698378a164ca2cf7e58"><div class="a5b3ac698378a164ca2cf7e58"></div><span>Charter/Boat Rental</span></li>
+<li id="58aba65ab0fb4d1a34428dfb"><div class="a58aba65ab0fb4d1a34428dfb"></div><span>Dinghy Tie Up</span></li>
+<li id="599d7a2e4986e2543f6cac22"><div class="a599d7a2e4986e2543f6cac22"></div><span>Dock</span></li>
+<li id="5b444483378a164ca2cf815b"><div class="a5b444483378a164ca2cf815b"></div><span>Dog Friendly</span></li>
+<li id="58ad28aea489a8326c16c74b"><div class="a58ad28aea489a8326c16c74b"></div><span>Fishing</span></li>
+<li id="59165bd8797b3a2e1e8c4f3b"><div class="a59165bd8797b3a2e1e8c4f3b"></div><span>Food+Drink</span></li>
+<li id="58aba663b0fb4d1a34428dfc"><div class="a58aba663b0fb4d1a34428dfc"></div><span>Fresh Water</span></li>
+<li id="58ad28c8a489a8326c16c74c"><div class="a58ad28c8a489a8326c16c74c"></div><span>Fuel</span></li>
+<li id="5a307c055f0fd678321a1766"><div class="a5a307c055f0fd678321a1766"></div><span>Gas Refill</span></li>
+<li id="58ad28dfa489a8326c16c74d"><div class="a58ad28dfa489a8326c16c74d"></div><span>Hazard</span></li>
+<li id="5dcdf8126c15f862e988756b"><div class="a5dcdf8126c15f862e988756b"></div><span>Hazard- No Anchoring</span></li>
+<li id="5a4d6308eab59d15cd729fe0"><div class="a5a4d6308eab59d15cd729fe0"></div><span>Historic</span></li>
+<li id="5aac62db54f78f15b2e542e9"><div class="a5aac62db54f78f15b2e542e9"></div><span>Hospital</span></li>
+<li id="58aba67bb0fb4d1a34428e00"><div class="a58aba67bb0fb4d1a34428e00"></div><span>Information</span></li>
+<li id="58ad28eca489a8326c16c74e"><div class="a58ad28eca489a8326c16c74e"></div><span>Kayak</span></li>
+<li id="5ad41f31c101f104c22f68a8"><div class="a5ad41f31c101f104c22f68a8"></div><span>Laundry</span></li>
+<li id="5b699090e0d1962ee6397e0e"><div class="a5b699090e0d1962ee6397e0e"></div><span>Lighthouse</span></li>
+<li id="5aac668854f78f15b2e542eb"><div class="a5aac668854f78f15b2e542eb"></div><span>Local Information</span></li>
+<li id="58bf6a24848130142cd8a383"><div class="a58bf6a24848130142cd8a383"></div><span>Marina</span></li>
+<li id="58ad2902a489a8326c16c74f"><div class="a58ad2902a489a8326c16c74f"></div><span>Marine Life</span></li>
+<li id="58cbfb5a29121b584bbd7de3"><div class="a58cbfb5a29121b584bbd7de3"></div><span>Mooring</span></li>
+<li id="5ac1c98fc101f104c22f64e3"><div class="a5ac1c98fc101f104c22f64e3"></div><span>Mooring/Payment</span></li>
+<li id="599d731b4986e2543f6cac19"><div class="a599d731b4986e2543f6cac19"></div><span>NAV Port Marker</span></li>
+<li id="599d6e954986e2543f6cac0e"><div class="a599d6e954986e2543f6cac0e"></div><span>NAV Starboard Marker</span></li>
+<li id="58bf6a34848130142cd8a384"><div class="a58bf6a34848130142cd8a384"></div><span>Navigation Information</span></li>
+<li id="58ad2820a489a8326c16c748"><div class="a58ad2820a489a8326c16c748"></div><span>Picnic Area</span></li>
+<li id="5964b99d1130e05f3a97d77f"><div class="a5964b99d1130e05f3a97d77f"></div><span>Playground</span></li>
+<li id="5aac624354f78f15b2e542e8"><div class="a5aac624354f78f15b2e542e8"></div><span>Police</span></li>
+<li id="5b8c5f64662730276fedc26c"><div class="a5b8c5f64662730276fedc26c"></div><span>Port of Entry/Customs</span></li>
+<li id="5fa8967438270553de01cfde"><div class="a5fa8967438270553de01cfde"></div><span>Premium Guide-Anchorage</span></li>
+<li id="5fa9b4026fe23563b5666cb6"><div class="a5fa9b4026fe23563b5666cb6"></div><span>Premium Guide-Hazard</span></li>
+<li id="5fa9b3936fe23563b5666cb3"><div class="a5fa9b3936fe23563b5666cb3"></div><span>Premium Guide-Historic</span></li>
+<li id="5fa9b3be6fe23563b5666cb4"><div class="a5fa9b3be6fe23563b5666cb4"></div><span>Premium Guide-Information</span></li>
+<li id="5fa9b3df6fe23563b5666cb5"><div class="a5fa9b3df6fe23563b5666cb5"></div><span>Premium Guide-Navigation</span></li>
+<li id="5fb16690a544c5546230d6ec"><div class="a5fb16690a544c5546230d6ec"></div><span>Premium Guide-Shallow Anchorage</span></li>
+<li id="5964bf501130e05f3a97d780"><div class="a5964bf501130e05f3a97d780"></div><span>Pump out</span></li>
+<li id="5a23dfbce589ae23f0537e18"><div class="a5a23dfbce589ae23f0537e18"></div><span>Radio/Authority</span></li>
+<li id="5a7915cbdbbbf134447fc4d7"><div class="a5a7915cbdbbbf134447fc4d7"></div><span>Recycling</span></li>
+<li id="58ad2910a489a8326c16c750"><div class="a58ad2910a489a8326c16c750"></div><span>Repair</span></li>
+<li id="5beccf95302f9230e77f3021"><div class="a5beccf95302f9230e77f3021"></div><span>Rescue Service</span></li>
+<li id="5bcd413caa62a013b6803bdd"><div class="a5bcd413caa62a013b6803bdd"></div><span>Resort</span></li>
+<li id="59165ca0797b3a2e1e8c4f3c"><div class="a59165ca0797b3a2e1e8c4f3c"></div><span>Sailing Club</span></li>
+<li id="5a4d6298eab59d15cd729fdf"><div class="a5a4d6298eab59d15cd729fdf"></div><span>Scenic</span></li>
+<li id="58ad292da489a8326c16c752"><div class="a58ad292da489a8326c16c752"></div><span>Shop</span></li>
+<li id="5af17f53293d912df618fcc1"><div class="a5af17f53293d912df618fcc1"></div><span>Shower</span></li>
+<li id="58ad293ea489a8326c16c753"><div class="a58ad293ea489a8326c16c753"></div><span>Snorkelling/Scuba</span></li>
+<li id="58ad295ca489a8326c16c754"><div class="a58ad295ca489a8326c16c754"></div><span>Swimming Spot</span></li>
+<li id="5af17ff7293d912df618fcc2"><div class="a5af17ff7293d912df618fcc2"></div><span>Toilets</span></li>
+<li id="58aba675b0fb4d1a34428dfe"><div class="a58aba675b0fb4d1a34428dfe"></div><span>Transportation</span></li>
+<li id="58ad297da489a8326c16c755"><div class="a58ad297da489a8326c16c755"></div><span>Walking Track</span></li>
+<li id="58ad2b81a489a8326c16c756"><div class="a58ad2b81a489a8326c16c756"></div><span>Water Sport</span></li>
+<li id="5b0782fe378a164ca2cf6d14"><div class="a5b0782fe378a164ca2cf6d14"></div><span>Way Point Marker</span></li>
+<li id="58bf6a44848130142cd8a385"><div class="a58bf6a44848130142cd8a385"></div><span>Weather</span></li>
+<li id="5b9312e6aa62a013b6802751"><div class="a5b9312e6aa62a013b6802751"></div><span>Wikipedia</span></li>
+<li id="591179728302183faf7a51b6"><div class="a591179728302183faf7a51b6"></div><span>Wildlife</span></li>
+
+	</ul>
+
+</div>
+
+<div class="reposButton" id="relocateButton"  onclick="doRepos()" style="display:none;"></div>
+<div id="imgModalClose" onclick="closeImageModal()" style="display:none">&#10006;</div>
+<div id="imgModal" style="display:none" onclick="closeImageModal()">
+	<img src="" id="modalImage" style="transform: translateY(-50%);"></img>
+</div>
+<div style="width:100%; display: none; justify-content: center;">
+<div id="popup1" style=" position: fixed;  padding: 10px;  max-width: 500px; text-align: center; border-radius: 10px;  bottom: 0%;  margin: 0 auto;  transform: translate(0%,-50%); background: rgba(200,200,200,.9);  visibility: visible;  opacity: 1;   -webkit-transition: opacity .5s, visibility 0s linear .5s;  transition: opacity .5s, visibility 0s linear .5s;  z-index: 1;">
+ <span onclick=closeNew() style="position: absolute;  right: 5px; top: 5px;  padding: 5px;  color: #000;  font-size: 2em; cursor: pointer; line-height: .6em; font-weight: bold;">&times;</span>
+
+   <h4 style="display:inline-block;vertical-align:middle;font-size:16px">Add 10 or more markers in the next 10 days<br> to receive 300 extra offline download tokens as a thank you!</h3><br>
+
+
+</div>
+  </div>
+<div id="disModalcont" style="width: 100%;    display: none;    justify-content: center;    position: fixed;    top: 0;    height: 100%;    align-items: center;">
+<div id="disModal" onclick="closeDisModal()">
+	<div align="center"><p class="MsoNormal" style="text-align: center;"><img alt="AHO Logo_White_CMYK_LANDSCAPE_Dec 2017_PNG_300x134.jpg" id="img_1621469523437" src="data:image/jpeg;base64,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" style="max-width: 1126px; max-height: 882px;"><br></p><p class="MsoNormal" style="text-align: center;"><br></p><p class="MsoNormal" style="text-align: center;"><b><font size="5"><i>Disclaimer</i></font></b></p><p class="MsoNormal" style="text-align: center;"><br></p><p class="MsoNormal" style="text-align: center;"></p><p class="MsoNormal">The data contained in this service is provided for
+information and product discovery purposes only and <b>must not be used for
+navigation</b> and decisions for this purpose must not be made using the data
+presented in this service<b>.&nbsp; <o:p></o:p></b></p><p class="MsoNormal"><b><br></b></p><p class="MsoNormal">Chart Index limits and metadata are updated in line with the Notice to Mariner's fortnightly&nbsp;cycle. The&nbsp;<b>AHO&nbsp;</b><b>ENC Series Basemap</b>&nbsp;is&nbsp;<b>updated on a bi-annually basis</b>&nbsp;in January and July, and therefore&nbsp;<b>it may not contain all Notice to Mariner's corrections</b>.</p><p class="MsoNormal">&nbsp;</p>
+
+<p class="MsoNormal">The Australian Hydrographic Office (AHO) makes no warranties
+or guarantees, either expressed or implied, as to the completeness, accuracy or
+correctness of the data portrayed on this website nor accepts any liability,
+arising from any incorrect, incomplete or misleading information contained
+therein.<o:p></o:p></p>
+
+<p class="MsoNormal"><o:p>&nbsp;</o:p></p>
+
+<p class="MsoNormal">All information and data is provided "as is" with
+no warranty either expressed or implied, including but not limited to, fitness
+for a particular purpose.<o:p></o:p></p>
+
+<p class="MsoNormal"><o:p>&nbsp;</o:p></p>
+
+<p class="MsoNormal">AHO products can only be obtained from <a href="https://hydro.gov.au/webapps/jsp/agents/agents-list.jsp">Australian
+Hydrographic Office Distribution Agents</a><o:p></o:p></p>
+
+<p class="MsoNormal"><o:p>&nbsp;</o:p></p>
+
+<p class="MsoNormal">For more information on the licensing of specific products
+contact&nbsp;<a href="mailto:hydro.licensing@defence.gov.au?subject=Licensing%20Enquiry%20from%20AHO%20Chart%20Index">Hydro
+Licensing</a><o:p></o:p></p>
+
+<p class="MsoNormal"><o:p>&nbsp;</o:p></p>
+
+<p class="MsoNormal">© Commonwealth of Australia 2021<o:p></o:p></p>
+
+<p class="MsoNormal"><o:p>&nbsp;</o:p></p>
+
+<p class="MsoNormal">This work is <a href="https://www1.defence.gov.au/copyright">Copyright</a><o:p></o:p></p><br><p></p></div>
+<br><button id="closeDisModal" onclick="closeDisModal()">OK</button>
+</div>
+</div>
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiY2FsY2lmZXJhbWMiLCJhIjoiY2tuYjh2eGl6MXAzMTMxcGh0ZWxyNGMxZSJ9.AbqaePZXkqfOFBl9_dQfDg';
+	var lats = 0;
+	var lons = 0;
+	var zooms = 0;
+	try {
+        lats = localStorage.getItem('lon');
+		lons = localStorage.getItem('lat');
+		zooms = localStorage.getItem('zoom');
+		var exclist=localStorage.getItem('filters');
+		var units = localStorage.getItem('units');
+		var degs = localStorage.getItem('degs');
+    } catch(e) {
+    }
+var map = new mapboxgl.Map({container: 'map',style: 'mapbox://styles/mapbox/satellite-streets-v10', center: [lats,lons], zoom: zooms});
+map.on('dragend', function() {doMove();} );
+map.on('moveend', function() {doMove()});
+map.on('click', (e) => {if(measuring){addMeasure(e);throwAnError.fixthislater();return false;}});
+var navc = new mapboxgl.NavigationControl({showCompass: false});
+navc.options.showCompass = false;
+//navc._container.style.margin = "65px 38px";
+navc._container.style.margin = "2px 2px";
+map.addControl(navc,'bottom-right');
+
+if(exclist==null||exclist=="")exclist=[];
+if(exclist.length==1&&exclist[0]=="")exclist=[];
+if(exclist.length>1&&exclist[0]!="")exclist=exclist.split(",");
+
+var currentMarkers=[];
+var currentUser="";
+var currentUserName="";
+var currentUserId="";
+var currentMarker="";
+var toOpen="";
+var updateing = false;
+if(units==null)units="metric";
+
+if(degs==null)degs=false;
+var isEditing=false;
+var currentPopup=new mapboxgl.Popup({offset:25}).setHTML('<div><h3>Loading...</h3><div class="spacer"><br></div></div>');
+var defaultSpinner='<div class="load-9"><div class="spinner"><div class="bubble-1"></div><div class="bubble-2"></div></div></div>';
+var navi;
+var currentBlips=[];
+var showAIS = false;
+
+
+var scale = new mapboxgl.ScaleControl({maxWidth: 400, position:'top-right', unit: units });
+setTimeout(function(){
+	scale._container.style.margin="0 auto";
+	scale._container.addEventListener("click",function(){changeunits()});
+	updateLatLon();
+}, 300);
+map.addControl(scale);
+
+function closeNew(){
+	document.getElementById("popup1").style.transform="scale(0)";
+	localStorage.setItem('newCharts', "comp" );
+}
+function doMove(){
+	if(!updateing){slowMove();updateing =true;}
+}
+function slowMove(){
+	setTimeout(function(){
+		updateing =false;
+		if(!currentPopup.isOpen()){
+			loadIcons();
+		}else{
+			var pp = currentPopup.getElement().getClientRects()[0];
+			if((pp.x<window.innerWidth*-1||pp.x>window.innerWidth*2||pp.y<window.innerHeight*-1||pp.y>window.innerHeight*2))loadIcons();
+		}
+		updateLatLon();
+		localStorage.setItem('lat', map.getCenter().lat);
+		localStorage.setItem('lon', map.getCenter().lng);
+		localStorage.setItem('zoom', map.getZoom());
+		if(map.getBearing()!=-0||map.getPitch()!=0)document.getElementById("northIcon").style.display = "block";
+		document.getElementsByClassName("naviicon")[0].style.transform="rotate("+Math.round(map.getBearing()*-1)+"deg)"
+	}, 300);
+}
+function updateLatLon(){
+	document.getElementById('latlondiv').innerHTML = Math.round(map.getCenter().lat*1000000)/1000000+", "+Math.round(map.getCenter().lng*10000000)/10000000;
+	if(degs)document.getElementById('latlondiv').innerHTML = toMin(map.getCenter().lat)+", "+toMin(map.getCenter().lng);
+}
+function toMin(dms){
+	Abs = Math.abs( Math.round(dms * 1000000.));
+	days = Math.floor(Abs / 1000000);
+    	minutes = Math.floor(((Abs/1000000) - days) * 60);
+    	secounds = ( Math.floor((( ((Abs/1000000) - days) * 60) - minutes) * 100000) *60/100000 ).toFixed();
+	return (days*(dms>0?1:-1)) + '\u00B0 ' + minutes + "' " + secounds + "'' ";
+}
+function linkify(inputText) {
+    var replacedText, replacePattern1, replacePattern2, replacePattern3;
+	var links = inputText.match(/<a(.+?)<\/a>/g);
+	var images = inputText.match(/<img.+?>/g);
+	inputText = inputText.replace(/<a(.+?)<\/a>/g,"@@@@@");
+	inputText = inputText.replace(/<img.+?>/g,"@@@@");
+    replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
+    replacedText = inputText.replace(replacePattern1, '<a href="$1" target="_blank">$1</a>');
+    replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+    replacedText = replacedText.replace(replacePattern2, '$1<a href="http://$2" target="_blank">$2</a>');
+    replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
+    replacedText = replacedText.replace(replacePattern3, '<a href="mailto:$1">$1</a>');
+	if(links!=null)for(var i = 0;i<links.length;i++)replacedText = replacedText.replace(/@@@@@/s,links[i]);
+	if(images!=null)for(var i = 0;i<images.length;i++)replacedText = replacedText.replace(/@@@@/s,images[i]);
+    return replacedText;
+}
+function loadIcons(){	
+	console.log("loading"+toOpen);
+	fetchingbounds = map.getBounds();
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+	  if (this.readyState == 4 && this.status == 200) {
+		if (currentMarkers!==null) {for (var i = currentMarkers.length - 1; i >= 0; i--) {currentMarkers[i].remove();}}
+		currentMarkers=[];
+		var rows = this.responseText.split("\r\n");
+		for (i = 0; i < rows.length; i++) {
+			var vals = rows[i].split(";");
+			if(isNaN(vals[2])){continue;}
+			var el = document.createElement('div');
+  			el.className = 'marker a' + vals[3];
+			var newp = new mapboxgl.Popup({offset:25}).setHTML('<div id="'+vals[0]+'" title="'+vals[3]+'"><div class="load-9"><div class="spinner"><div class="bubble-1"></div><div class="bubble-2"></div></div></div><div class="spacer"><br></div></div>');
+			newp.id=vals[0];
+			newp.on('open', e => {showinfo(e.target.id);console.log("opening:"+e.target.id);currentPopup = e.target;});
+			newp.setMaxWidth('400px');
+  			var newm = new mapboxgl.Marker(el).setLngLat([parseFloat(vals[2]),parseFloat(vals[1])]).setPopup(newp ).addTo(map);
+			if(toOpen==vals[0] && vals[0].trim()!="") {newm.togglePopup();toOpen="";}
+			currentMarkers.push(newm);
+		}
+	  }
+	};
+	var fv = exclist.length==0?"":"&ft="+exclist.join(":");
+	xhttp.open("GET", "https://api.zuluwaterways.com/loadicons.php?lat1="+fetchingbounds._ne.lat+"&lat2="+fetchingbounds._sw.lat+"&lon1="+fetchingbounds._ne.lng+"&lon2="+fetchingbounds._sw.lng+fv, true);
+	xhttp.send();
+	
+	if(showAIS==true){
+		xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+		  if (this.readyState == 4 && this.status == 200) {
+			if (currentBlips!==null) {for (var i = currentBlips.length - 1; i >= 0; i--) {currentBlips[i].remove();}}
+			currentBlips=[];
+			var rows = this.responseText.split("\r\n");
+			for (i = 0; i < rows.length; i++) {
+				var vals = rows[i].split(";");
+				if(isNaN(vals[2])){continue;}
+				var el = document.createElement('div');
+				el.className = 'aismarker b' + vals[4];
+				var type = "Unknown";
+				if(vals[4]=="30"){type="Fishing";}
+				if(vals[4]=="31"){type="Towing";}
+				if(vals[4]=="33"){type="Dredging";}
+				if(vals[4]=="34"){type="Dive Boat";}
+				if(vals[4]=="35"){type="Military";}
+				if(vals[4]=="36"){type="Sailing";}
+				if(vals[4]=="37"){type="Motor Boat";}
+				if(vals[4]=="40"){type="High Speed Ferry";}
+				if(vals[4]=="50"){type="Pilot";}
+				if(vals[4]=="51"){type="Search and Rescue";}
+				if(vals[4]=="52"){type="Tug";}
+				if(vals[4]=="53"){type="Port Tender";}
+				if(vals[4]=="55"){type="Police";}
+				if(vals[4]=="58"){type="Barge";}
+				if(vals[4]=="60"){type="Passenger";}
+				if(vals[4]=="69"){type="Passenger";}
+				if(vals[4]=="70"){type="Cargo";}
+				if(vals[4]=="79"){type="Cargo";}
+				if(vals[4]=="80"){type="Tanker";}
+				if(vals[4]=="89"){type="Tanker";}
+				var b = vals[6].split(/\D/);
+				var dt =  new Date(vals[6].replaceAll("-","/"));
+				var dtl = dt.toLocaleString();
+				//if (isNaN(dt)){dtl=vals[6];}
+				//if (isNaN(dt)){dtl=vals[6];}
+				var newp = new mapboxgl.Popup({offset:25}).setHTML('<b>'+vals[7]+'</b><br>'+(dtl)+'<br>'+vals[1]+', '+vals[2]+'<br>Heading:'+vals[3]+'<br>Speed:'+vals[5]+'<br>Type:'+type+"("+vals[4]+")<br><a href=\"https://www.vesselfinder.com/vessels?name="+vals[7]+"\" target=\"_blank\">More info</a>");
+				newp.setMaxWidth('400px');
+				var newm = new mapboxgl.Marker(el).setLngLat([parseFloat(vals[2]),parseFloat(vals[1])]).setPopup(newp ).addTo(map);
+				newm.setRotation(parseFloat(vals[3]));
+				currentBlips.push(newm);
+			}
+		  }
+		};
+		xhttp.open("GET", "https://api.zuluwaterways.com/getAIS.php?lat1="+fetchingbounds._ne.lat+"&lat2="+fetchingbounds._sw.lat+"&lon1="+fetchingbounds._ne.lng+"&lon2="+fetchingbounds._sw.lng, true);
+		xhttp.send();
+	}
+}
+function showinfo(vv){
+	currentMarker=vv;
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+	  if (this.readyState == 4 && this.status == 200) {
+		var arr = JSON.parse(this.responseText);
+		if(document.getElementById(vv)==null)return;
+		var ad = currentUserName=="Zulu Waterways"?'<div class="adel" onclick="deleteMarker()">X</div>':'';
+		var ps = loadPics(arr.pictures);
+		var dl = Math.round(arr.lat*100000)/100000+", "+Math.round(arr.lon*100000)/100000;
+		var ll = degs?(toMin(arr.lat)+", "+toMin(arr.lon)):dl;
+		var dlmaps = "";
+		if(/(Version\/\d+.*\/\d+.0.0.0 Mobile|; ?wv|(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari))/i.test(navigator.userAgent)){
+			dlmaps = "<hr>Download Maps<br><div id=\"dlmapscont\"><img src=\"images/sat.jpg\" onclick=\"ldMap(0)\"/><img src=\"images/street.jpg\" onclick=\"ldMap(1)\"/><img src=\"images/nav.jpg\" onclick=\"ldMap(2)\"/><img src=\"images/osm.jpg\" onclick=\"ldMap(3)\"/></div><hr>";
+		}
+	  	document.getElementById(vv).innerHTML="<div class=\"infoHeader\"><div class=\"markerInfoIcon a"+
+			document.getElementById(vv).title+"\" title=\""+document.getElementById(vv).title+
+			"\"></div><ul id=\"markerIconDropdown\" onclick=\"changeMarkerType()\"></ul><div class=\"markerInfoTitle\" title=\""+arr.title+"\">"+
+			arr.title+"</div><div class=\"markerInfoSubtitle\" title=\""+ll+"\">"+ll+"</div>"+ad+
+			"</div><div id=\"im1\" title=\""+arr.pictures+"\">"+ps[0]+"</div><div id=\"tags\"></div><div id=\"oldDesc\" style=\"display:none\">"+
+			"</div><div id=\"cdesc\" class=\"markerDescription\" onclick=\"checkLinks()\">"+
+			"</div><div id=\"im2\" title=\""+arr.pictures+"\">"+ps[1]+"</div><div id=\"im3\">"+ps[2]+"</div><ul id=\"commentsDiv\"></ul><br><div id=\"Iextras\"></div><div class=\"markerPicBar\"></div>"+
+			"<div id=\"reportDiv\" style=\"display:none;\"><input id=\"reportInput\" placeholder=\"Whats Wrong?\"><button id=\"reportButton\" onclick=\"doReport('"+vv+
+			"')\">Submit</button></div><div id=\"commentBox\" style=\"display:none;\"><textarea id=\"commentText\"></textarea><button id=\"commentButton\" onclick=\"doComment()\">Submit</button></div><hr>By:"+
+			arr.usr+" @ "+arr.date+"<br><div id=\"bottomButtons\">"+dlmaps+"<span onclick=\"showCommmenting()\" class=\"cBut\"> Comment </span> | <span class=\"sBut\" onclick=\"doShare('"+arr.title+
+			"')\"> Share </span> | <span class=\"rBut\" onclick=\"showReport()\"> Report </span> | <span class=\"tBut\" onclick=\"showTides("+dl+")\"> Tides </span> | <span class=\"wBut\" onclick=\"showWind("+dl+
+			")\"> Wind </span> | <span class=\"weBut\" onclick=\"showWeather("+dl+")\"> Weather </span> | <span class=\"eBut\" id=\"editButton\" onclick=\"doEdit('"+vv+
+			"')\"> Edit </span></div><hr><div id=\"saveButtondiv\"></div><div id=\"com"+vv+"\"></div>" ;
+		var ldesc = linkify(arr.description);
+		document.getElementById("oldDesc").innerHTML=ldesc;
+		document.getElementById("cdesc").innerHTML=ldesc;
+	  	document.getElementById(vv).taglist=arr.tags==null?"":arr.tags.trim();
+		document.getElementById(vv).oldtaglist=arr.tags==null?"":arr.tags.trim();
+		window.location.hash="/"+vv+"/"+arr.lat+"/"+arr.lon+"/"+arr.title;
+		buildTags(false);
+		loadComments(vv);
+		checkOnScreen();
+		}
+	};
+	xhttp.open("GET", "https://api.zuluwaterways.com/loadinfo2.php?ids="+vv, true);
+	xhttp.send();
+	
+}
+function showTides(lat, lon){document.getElementById("Iextras").innerHTML = '<iframe src="https://marea.ooo/en/widget/'+lat+'/'+lon+'?components=text%2Cchart&padding=s&theme=light" style="background-color: transparent" width="100%" height="500px"></iframe>';document.getElementById("bottomButtons").scrollIntoView();}
+function showWind(olat,olon){
+	var month = (new Date()).getMonth()+1;
+	if(document.getElementById("monthSelector")!=null){
+		month = document.getElementById("monthSelector").value;
+	}
+	if(month<10)month = "0"+month;else month = month+"";
+	var lon = Math.abs(Math.round(olon,0));
+	if(lon%2==1)lon--;
+	if(lon < 100)lon = "0"+lon;
+	if(lon < 10)lon = "0"+lon;
+	lat = Math.abs(Math.round(olat,0));
+	if(lat%2==0)lat--;					
+	if(lat < 10)lat = "0"+lat;
+	document.getElementById("Iextras").innerHTML = "month:<select onchange=showWind("+olat+","+olon+") id=\"monthSelector\"><option value=1>January</option><option value=2>Febuary</option><option value=3>March</option><option value=4>April</option><option value=5>May</option><option value=6>June</option><option value=7>July</option><option value=8>August</option><option value=9>September</option><option value=10>October</option><option value=11>November</option><option value=12>December</option></select><br><img alt=\"No wind data availiable!\" style=\"width:100%\" src=\""+"https://www.pitufa.at/windroses/"+month+"/"+month+"_"+(olat>0?"N":"S")+lat+"_"+(olon>0?"E":"W")+lon+".svgz\"></img>";
+	document.getElementById("monthSelector").value = month*1;
+	document.getElementById("bottomButtons").scrollIntoView();
+}
+function showWeather(lat,lon){
+	document.getElementById("Iextras").innerHTML = '<iframe width="370" height="370" src="https://embed.windy.com/embed2.html?lat='+lat+'&lon='+lon+'&detailLat='+lat+'&detailLon='+lon+'&width=370&height=370&zoom=7&level=surface&overlay=wind&product=ecmwf&menu=&message=&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=true&metricWind=kt&metricTemp=%C2%B0C&radarRange=-1" frameborder="0"></iframe>'
+	document.getElementById("bottomButtons").scrollIntoView();
+}
+function loadComments(vv){
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+	  if (this.readyState == 4 && this.status == 200) {
+		var arr = this.responseText.split("\r\n");
+		var list = arr.length>0?"<i><span style=\"float:left;\">Comments:</span><br>":"";
+		for(var i = 0;i<arr.length;i++){
+			var coms = arr[i].split(":");
+			if(coms.length<3)continue;
+			var name = coms.shift();
+			var dt = coms.shift();
+			var com = coms.join(":").trim();
+			if(com.trim()!="")list+="<li>"+com+'<div class="commentsAuth">'+name+", "+dt+"</div><br></li>";
+		}
+		list+="</i>";
+		document.getElementById("commentsDiv").innerHTML=list;			
+	}
+	};
+	xhttp.open("GET", "https://api.zuluwaterways.com/loadComments.php?ids="+vv, true);
+	xhttp.send();
+
+}
+function loadPics(str){
+	var picstr = ["","",""]
+	if(str.trim()=="")return picstr;
+	var pics = str.split(":");
+	for (var i = 0;i<pics.length;i++){
+		if(pics[i].length<3)continue;
+		picstr[i]='<img class="infoPic" title="'+pics[i]+'" src="https://api.zuluwaterways.com/getImg.php?tk=35q25wa5wsvi7y8s83wy53wy5nkyzs20lzsb23&fn='+pics[i]+'" onclick="imageModal(this)">';
+	}
+	return picstr;
+}
+function checkOnScreen(){
+	var bb = document.getElementsByClassName("mapboxgl-popup")[0].getBoundingClientRect();
+	var mb = map.getBounds();
+	if(bb.bottom>window.innerHeight||bb.left<0||bb.right>window.innerWidth||bb.top<0)
+		map.panTo([currentPopup._lngLat.lng,currentPopup._lngLat.lat+(map.getBounds()._sw.lat-map.getBounds()._ne.lat)*0.45]);
+}
+
+
+
+
+
+
+
+function showRetical(){
+	if(currentUserName==""){
+		new Toast({message: 'Please login before editing!'});
+	}else{
+		document.getElementById("relocateButton").style.display=document.getElementById("relocateButton").style.display=="none"?"":"none";
+	}
+}
+function showCommmenting(){
+	document.getElementById("commentBox").style.display=document.getElementById("commentBox").style.display=="none"?"":"none";
+	document.getElementById("commentText").focus();
+}
+function buildTags(edit){
+	var iner=(edit==true?('<span id="tagseditspan"><i>Tags: </i></span><button id="tagAddButton" onclick="addTag()">+</button>'):'')+'<ul id="tagsList">';
+	var tags = document.getElementById(currentMarker).taglist.split(':');
+	for(var i = 0;i<tags.length;i++){
+		iner+=tags[i].trim()==""?"":('<li class="tagc'+tags[i]+' searchTag" '+(edit==true?'onclick="removeTag()"':'')+'><span>'+tags[i]+'</span><button class="deleteTag" style="display:none" onclick="deleteTag()">X</button></li>');
+	}
+	iner+='</ul><div id="tagSearchDiv" style="display:none"><input id="taginput" onkeyup="searchTag()" placeholder="Tag Search"><ul id="tagSearchResults" onclick="addTagtoList()"></ul></div>';
+	if(edit)iner+="<br><i style=\"float:left;\">Description:</i>";
+	document.getElementById("tags").innerHTML=iner;
+}
+function showMarkerList(){
+	document.getElementById("markerIconDropdown").innerHTML=document.getElementById("markerTypeList").innerHTML;
+	document.getElementById("markerIconDropdown").removeChild(document.getElementById("markerIconDropdown").children[0]);					
+}
+function doSearch(){
+	document.getElementById("searchResults").innerHTML="";
+	var tsl = "";
+	if(document.getElementById("tagsCheck").checked){
+		for(var i = 0; i<tagList.length;i++){
+			tsl+='<li class="searchTag" onclick="searchTags()">'+tagList[i]+"</li>";
+		}
+	}
+	document.getElementById("searchTagsList").innerHTML=tsl;
+	if(document.getElementsByName("search")[0].value.trim().length<2&&document.querySelector('input[name="searchWhere"]:checked').id=="evCheck")return;
+	if(!document.getElementById("titlescheck").checked&&!document.getElementById("tagsCheck").checked&&!document.getElementById("locsCheck").checked)document.getElementById("titlescheck").checked=true;
+	document.getElementById("searchResults").innerHTML=defaultSpinner;
+	if(document.getElementsByName("search")[0].value.trim().split(",").length==2&&!isNaN(parseFloat(document.getElementsByName("search")[0].value.trim().split(",")[0]))&&!isNaN(parseFloat(document.getElementsByName("search")[0].value.trim().split(",")[1]))){
+		document.getElementById("searchResults").innerHTML = document.getElementById("searchResults").innerHTML+"<br><span onclick=\"doZoomTo("+parseFloat(document.getElementsByName("search")[0].value.trim().split(",")[0])+","+parseFloat(document.getElementsByName("search")[0].value.trim().split(",")[1])+",'')\">Go to: "+document.getElementsByName("search")[0].value.trim()+"</span>";
+	}
+	var sw = "";
+	if(document.querySelector('input[name="searchWhere"]:checked').id=="osCheck")sw="&bb="+map.getBounds().toArray().toString();
+	if(document.querySelector('input[name="searchWhere"]:checked').id=="myCheck")sw="&usr="+currentUserName;
+
+	if(document.querySelector('input[name="searchWhere"]:checked').id=="nearcheck"){
+		geolocate.trigger();
+		if(geolocate._lastKnownPosition!=null)sw="&bb="+(geolocate._lastKnownPosition.coords.longitude-0.1)+","+(geolocate._lastKnownPosition.coords.latitude-0.1)+","+(geolocate._lastKnownPosition.coords.longitude+0.1)+","+(geolocate._lastKnownPosition.coords.latitude+0.1);
+	}
+	
+	sw+="&c1="+map.getCenter().lat+"&c2="+map.getCenter().lng
+	if(document.getElementById("titlescheck").checked||document.getElementById("tagsCheck").checked){
+	var xhttp5 = new XMLHttpRequest();
+	xhttp5.onreadystatechange = function() {
+	  if (this.readyState == 4 && this.status == 200) {
+			var inner = "";
+			var rows = this.responseText.split("\r\n"),i;
+			for (i = 0; i < rows.length; i++) {
+				var vals = rows[i].split(";");
+				if(isNaN(vals[2])){continue;}
+				inner+='<li onclick="doZoomTo(\''+vals[1]+'\',\''+vals[2]+'\',\''+vals[0]+'\')"><div class="searchresultsIcon a'+vals[3]+"\"></div><div class=\"searchresultstitle\">"+vals[5]+" ("+Math.round(vals[4]/100*(units=='metric'?"1":(units=='imperial'?0.621371:0.539957)))/10+(units=='metric'?"km":(units=='imperial'?"m":"nm"))+")</div></div></li>";
+				
+			}
+			document.getElementById("searchResults").innerHTML=document.getElementById("searchResults").innerHTML==defaultSpinner?inner:(document.getElementById("searchResults").innerHTML+inner);
+		}
+	};
+	xhttp5.open("GET", "https://api.zuluwaterways.com/search.php?"+(document.getElementById("titlescheck").checked?("title="+document.getElementsByName("search")[0].value.trim()):"")+(document.getElementById("titlescheck").checked&&document.getElementById("tagsCheck").checked?"&":"")+(document.getElementById("tagsCheck").checked?("tags="+document.getElementsByName("search")[0].value.trim()):"")+sw, true);
+	xhttp5.send();
+	}
+	if(document.getElementById("locsCheck").checked&&document.querySelector('input[name="searchWhere"]:checked').id=="evCheck"){
+	var xhttp6 = new XMLHttpRequest();
+	xhttp6.onreadystatechange = function() {
+	  if (this.readyState == 4 && this.status == 200) {
+			var inner = "";
+			var j = JSON.parse(this.responseText);
+			for (i = 0; i < j.features.length; i++) {
+				inner+='<li onclick="doZoomTo(\''+j.features[i].center[1]+"','"+j.features[i].center[0]+"')\"><div class=\"searchresultstitle\">"+j.features[i].place_name+"</div></div></li>";
+			}
+			document.getElementById("searchResults").innerHTML=document.getElementById("searchResults").innerHTML==defaultSpinner?inner:(document.getElementById("searchResults").innerHTML+inner);
+		}
+	};
+	xhttp6.open("GET", "https://api.mapbox.com/geocoding/v5/mapbox.places/"+document.getElementsByName("search")[0].value.trim()+".json?limit=15&access_token="+mapboxgl.accessToken, true);
+	xhttp6.send();
+
+	}
+
+
+}
+function searchTags(){
+	document.getElementsByName("search")[0].value=event.target.innerText;	
+	doSearch();
+}
+function showMyMarkers(){
+	document.getElementById("myCheck").checked = true;
+	doSearch()
+	showSearch();
+}
+function showSearch(){
+	document.getElementById("searchbardiv").className=document.getElementById("searchbardiv").className==""?"searchbarhidden":"";
+	if(currentPopup.isOpen())currentPopup.remove();
+	document.getElementById("filterList").style.right="-400px";
+}
+function closeSearch(){
+	if(currentPopup.isOpen())currentPopup.remove();
+	document.getElementById("searchbardiv").className="searchbarhidden";
+}
+function doZoomTo(lat, lon, id){
+	if(currentPopup.isOpen())currentPopup.remove();
+	document.getElementById("searchbardiv").className="searchbarhidden";
+	map.flyTo({center: [lon,lat],zoom: 13,essential: true});
+	toOpen=id;
+	currentMarker=id;
+	if(event!=null&&exclist.indexOf(event.target.parentNode.children[0].className.split(" ")[1].substr(1,99))>=0)new Toast({message: 'Searched icon filtered!<br>Middle right button to change filters.'});
+}
+function changeunits(){
+	degs = !degs;
+	localStorage.setItem('degs', degs);
+	units = units=="metric"?"imperial":(units=="imperial"?"nautical":"metric");
+	localStorage.setItem('units', units);
+	scale.setUnit(units);
+	updateLatLon();
+	rebuildMeasure();
+}
+var measurePoints = [];
+var measureMarkers = [];
+var measuring = false;
+const measureLine = {'type': 'FeatureCollection','features': []};
+const measureMidpoint = {'type': 'FeatureCollection','features': []};
+
+
+
+function addMeasureLayers(){
+	map.addSource('measureLine', {'type': 'geojson','data': measureLine });
+  	map.addSource('measureMidpoint', {'type': 'geojson','data': measureMidpoint });
+  	
+ 	
+	map.addLayer({"id": "symbols","type": "symbol","source": "measureMidpoint","layout": { "symbol-placement": "point","text-font": ["Arial Unicode MS Regular"],
+	"text-field": '{title}', "text-size": 18 },paint: { "text-color": "#202","text-halo-color": "#fff", "text-halo-width": 2}});
+	map.addLayer({"id": "route","type": "line","source": "measureLine","layout": {"line-join": "round","line-cap": "round"},"paint": {"line-color": "lightgreen","line-width": 8}});
+	if(measurePoints.length>0)rebuildMeasure();
+
+}
+function gotoMarkerAdmin(vv){
+	currentMarker=vv;
+	if(currentPopup!=null)currentPopup.remove();
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+	  if (this.readyState == 4 && this.status == 200) {
+		var arr = JSON.parse(this.responseText);
+		map.flyTo({center: [arr.lon,arr.lat],zoom: 13,essential: true});
+		toOpen=vv.trim();
+		console.log(arr);
+		}
+	};
+	xhttp.open("GET", "https://api.zuluwaterways.com/loadinfo2.php?ids="+vv.trim(), true);
+	xhttp.send();
+}
+map.on('load', function() { checkHash();addMeasureLayers()});
+loadIcons();
+function checkHash(){
+if(window.location.hash!=""){
+	var parts = window.location.hash.split("/");
+	if(parts.length>2)
+	if(parts[1]=="route"){
+		parts.shift();
+		for(var i = 4;i<parts.length;i++){
+			measurePoints.push([parseFloat(parts[i+1]),parseFloat(parts[i])]);
+			i++;
+		}
+		map.flyTo({center: [parts[2],parts[1]],zoom: parts[3],essential: true});
+	}else{
+		if(parts.length>2)doZoomTo(parts[2],parts[3],parts[1]);
+	}
+	if(parts.length==1){
+		
+		var fa = document.getElementById("markerTypeList").children;
+		exclist=[];
+		for(var i = 1;i<fa.length;i++){
+			if(window.location.hash.indexOf(fa[i].id)!=-1){
+				fa[i].className="hideme";
+				exclist.push(fa[i].id);
+			}
+		}
+		loadIcons();
+	}
+	
+}
+
+if(window.location.pathname.substr(0,10)=='/map/icon/'){
+	gotoMarkerAdmin(window.location.pathname.substr(10,24));
+	window.history.pushState('markerLink', 'Zulu Waterways', "/"+window.location.hash);
+}
+}
+function getRandomLink(){
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+	  if (this.readyState == 4 && this.status == 200) {
+		console.log(this.responseText);
+		document.getElementById("exploreLink").href="#/"+this.responseText.replaceAll(";","/");
+		//gotoMarkerAdmin(this.responseText.split(";")[0]);
+	}
+	};
+	xhttp.open("GET", "https://api.zuluwaterways.com/random.php", true);
+	xhttp.send();
+}
+
+function gotoRandom(){
+	//console.log(document.getElementById("exploreLink").href);
+	gotoMarkerAdmin(document.getElementById("exploreLink").href.split("/")[4]);
+	getRandomLink();
+}
+//loadIcons();
+
+var geolocate = new mapboxgl.GeolocateControl({positionOptions: {enableHighAccuracy: true},trackUserLocation: true});
+map.addControl(geolocate);
+document.getElementsByClassName("mapboxgl-ctrl-top-right")[0].style.display="none"
+</script>
+<script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.js"></script>
+<link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css" />
+<script src="/js/toast.js"></script>
+<link type="text/css" rel="stylesheet" href="/js/toast.css" />
+
+<script>
+//loc stuff
+
+
+//layers stuff
+function showSat(e){
+	e.nextElementSibling.style.display=e.nextElementSibling.style.display=="none"?"":"none";
+	e.nextElementSibling.nextElementSibling.style.display=e.nextElementSibling.nextElementSibling.style.display=="none"?"":"none";
+	e.nextElementSibling.nextElementSibling.nextElementSibling.style.display=e.nextElementSibling.nextElementSibling.nextElementSibling.style.display=="none"?"":"none";
+	e.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.display=e.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.display=="none"?"":"none";
+	window.event.preventDefault()
+}
+function showStreet(e){
+	e.nextElementSibling.style.display=e.nextElementSibling.style.display=="none"?"":"none";
+	e.nextElementSibling.nextElementSibling.style.display=e.nextElementSibling.nextElementSibling.style.display=="none"?"":"none";
+	e.nextElementSibling.nextElementSibling.nextElementSibling.style.display=e.nextElementSibling.nextElementSibling.nextElementSibling.style.display=="none"?"":"none";
+	window.event.preventDefault()
+}
+function showCharts(e){
+	var tochange = e.nextElementSibling.style.display=="none"?"":"none";
+	var el = e;
+	while(el.nextElementSibling!=null){
+		el.nextElementSibling.style.display=tochange;
+		el=el.nextElementSibling;
+	}
+	window.event.preventDefault()
+}
+function changeMap(e){
+	var el = event.target;
+	if(el.tagName!="LI")el = event.target.parentNode;
+	for(var i = 0;i<document.getElementsByClassName("mapTypeButton").length;i++){document.getElementsByClassName("mapTypeButton")[i].style.background = "";}
+	el.style.background = "grey";
+	document.getElementById("aisButton").style.background = showAIS?'grey':'';
+	setTimeout(function(){
+		map.type=e;
+		addMeasureLayers();
+	}, 1500);
+	
+
+
+	if (e=="sat"){map.setStyle('mapbox://styles/mapbox/satellite-streets-v10');return;}
+	if (e=="bing"){map.setStyle({version: 8,sources: {'raster-tiles': { 'attribution': "&copy; 2021 Microsoft", type: 'raster',tiles: ['https://ecn.t0.tiles.virtualearth.net/tiles/a{quadkey}.jpeg?g=321&mkt=en-gb&n=z','https://ecn.t1.tiles.virtualearth.net/tiles/a{quadkey}.jpeg?g=425&mkt=en-gb&n=z','https://ecn.t2.tiles.virtualearth.net/tiles/a{quadkey}.jpeg?g=423&mkt=en-gb&n=z','https://ecn.t3.tiles.virtualearth.net/tiles/a{quadkey}.jpeg?g=253&mkt=en-gb&n=z',],},},sprite: 'mapbox://sprites/mapbox/satellite-streets-v10', glyphs: 'mapbox://fonts/mapbox/{fontstack}/{range}.pbf', layers: [{id: 'simple-tiles',type: 'raster',source: 'raster-tiles',minzoom: 0,maxzoom: 22,},],});return;}
+	if (e=="topo"){map.setStyle('mapbox://styles/mapbox/outdoors-v11');return;}
+	if (e=="dark"){map.setStyle('mapbox://styles/mapbox/dark-v10');return;}
+	if (e=="esri"){map.setStyle('https://basemaps-api.arcgis.com/arcgis/rest/services/styles/ArcGIS:Imagery?type=style&token=AAPKe888a9c496b044d2b97e580b246d13ffRc25l6_f8wVS32lOTQGB-vBmKrEguX5Pni5VFjzqGeMZusXEwlHWQPDmg0uTg52j');return;}
+	if (e=="osm"){map.setStyle('https://basemaps-api.arcgis.com/arcgis/rest/services/styles/OSM:Streets?type=style&token=AAPKe888a9c496b044d2b97e580b246d13ffRc25l6_f8wVS32lOTQGB-vBmKrEguX5Pni5VFjzqGeMZusXEwlHWQPDmg0uTg52j');return;}
+	if (e=="street"){map.setStyle('mapbox://styles/mapbox/streets-v11');return;}
+	if (e=="noaa"){
+		map.setStyle('mapbox://styles/mapbox/empty-v8');
+		setTimeout(function(){
+			map.addSource('noaa', {'type': 'raster','tiles': ['https://tiles.zuluwaterways.com/service?LAYERS=NOAA&FORMAT=image%2Fjpeg&SRS=EPSG%3A3857&EXCEPTIONS=&TRANSPARENT=TRUE&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&BBOX={bbox-epsg-3857}&WIDTH=256&HEIGHT=256'],'tileSize': 256});
+			map.addLayer({'id': 'noaa','source': 'noaa','type': 'raster'});
+		 }, 1000);
+		return;
+	}
+	if (e=="coral"){
+		map.setStyle('mapbox://styles/mapbox/empty-v8');
+		setTimeout(function(){
+			map.addSource('coral', {'type': 'raster','tiles': ['https://www.zuluwaterways.com/offline/tiles/coral/{z}/{y}/{x}'],'tileSize': 256});
+			map.addLayer({'id': 'coral','source': 'coral','type': 'raster'});
+		 }, 1000);
+		return;
+	}
+	if (e=="hd"){
+		map.setStyle('mapbox://styles/mapbox/empty-v8');
+		setTimeout(function(){
+			map.addSource('hd', {'type': 'raster','tiles': ['https://tiles.zuluwaterways.com/wmts/mapBoxHybrid/webmercator/{z}/{x}/{y}.png'],'tileSize': 256});
+			map.addLayer({'id': 'hd','source': 'hd','type': 'raster'});
+		 }, 1000);
+		return;
+	}
+	if (e=="hyd"){
+		map.setStyle('mapbox://styles/mapbox/empty-v8');
+		setTimeout(function(){
+			map.addSource('hyd', {'type': 'raster','tiles': ['https://services.hydro.gov.au/site1/services/Basemaps/AHOChartSeries/ImageServer/WMSServer?REQUEST=GetMap&LAYERS=0&SRS=EPSG:3857&VERSION=1.1.1&FORMAT=image/jpeg&BBOX={bbox-epsg-3857}&WIDTH=256&HEIGHT=256'],'tileSize': 256});
+			map.addLayer({'id': 'hydro','source': 'hyd','type': 'raster'});
+		 }, 1000);
+		 if(localStorage.hydroDis != "ok"){
+			document.getElementById("disModalcont").style.display="flex";
+		 }
+		return;
+	}
+	if (e=="enc"){
+		map.setStyle('mapbox://styles/mapbox/empty-v8');
+		setTimeout(function(){
+			//map.addSource('enc', {'type': 'raster','tiles': ['https://services.hydro.gov.au/site1/services/Basemaps/AHOENCSeries/ImageServer/WMSServer?REQUEST=GetMap&LAYERS=0&SRS=EPSG:3857&VERSION=1.1.1&FORMAT=image/jpeg&BBOX={bbox-epsg-3857}&WIDTH=256&HEIGHT=256'],'tileSize': 256});
+			map.addSource('enc', {'type': 'raster','tiles': ['https://tiles.zuluwaterways.com/service?LAYERS=ausHydroENC&FORMAT=image%2Fjpeg&SRS=EPSG%3A3857&EXCEPTIONS=&TRANSPARENT=TRUE&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&BBOX={bbox-epsg-3857}&WIDTH=256&HEIGHT=256'],'tileSize': 256});
+			map.addLayer({'id': 'auenc','source': 'enc','type': 'raster'});
+		 }, 1000);
+		 if(localStorage.hydroDis != "ok"){
+			document.getElementById("disModalcont").style.display="flex";
+		 }
+		 if(map.getZoom()<3){
+			map.flyTo({center: [134.8352548570261,-26.158178845264125],zoom: 3,essential: true});
+		 }
+		 
+		return;
+	}
+	if (e=="nz"){
+		map.setStyle('mapbox://styles/mapbox/empty-v8');
+		setTimeout(function(){
+			map.addSource('nz', {'type': 'raster','tiles': ['https://tiles.zuluwaterways.com/service?LAYERS=NZLINZ&FORMAT=image%2Fjpeg&SRS=EPSG%3A3857&EXCEPTIONS=&TRANSPARENT=TRUE&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&BBOX={bbox-epsg-3857}&WIDTH=256&HEIGHT=256'],'tileSize': 256});
+			map.addLayer({'id': 'nz','source': 'nz','type': 'raster'});
+		 }, 1000);
+		 if(map.getZoom()<5){
+			map.flyTo({center: [172.60796092491438, -41.392371622283164],zoom: 5,essential: true});
+		 }
+		return;
+	}
+	if (e=="ch"){
+		map.setStyle('mapbox://styles/mapbox/empty-v8');
+		setTimeout(function(){
+			map.addSource('ch', {'type': 'raster','tiles': ['http://test.zuluwaterways.com/service?LAYERS=osm&FORMAT=image%2Fpng&SRS=EPSG:3857&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&TRANSPARENT=TRUE&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&BBOX={bbox-epsg-3857}&WIDTH=256&HEIGHT=256'],'tileSize': 256});
+			map.addLayer({'id': 'ch','source': 'ch','type': 'raster'});
+		 }, 1000);
+		return;
+	}
+	if (e=="ib"){
+		map.setStyle('mapbox://styles/mapbox/empty-v8');
+		setTimeout(function(){
+			map.addSource('ib', {'type': 'vector','tiles': ['https://fishing-app.gpsnauticalcharts.com/tiles_webclient/{z}/{x}/{y}.pbf?rand=1626471725&ts=2082632400&token=d22QssBk9oKGDk9w3XHUjA'],'tileSize': 256});
+			map.addLayer({'id': 'ib','source': 'ib','type': 'vector'});
+		 }, 1000);
+		return;
+	}
+
+
+
+	if (e=="osc"){
+		map.setStyle('mapbox://styles/mapbox/streets-v11');
+		setTimeout(function(){
+			map.addSource('osc', {'type': 'raster','tiles': ['https://tiles.zuluwaterways.com/wmts/openSeaMaps/webmercator/{z}/{x}/{y}.png'],'tileSize': 256});
+			map.addLayer({'id': 'osc','source': 'osc','type': 'raster'});
+		 }, 1000);
+		return;
+	}
+	if (e=="nav"){
+		if(navi==null){
+			navi = new JNC.Views.BoatingNavionicsMap({tagId: '.navcont',center: [ 151.21, -33.22 ],navKey: 'Navionics_webapi_03497'});
+			navi.onMapReady = function(){
+     			naviToken = navi.navToken;
+				map.addSource('nav', {'type': 'raster','tiles': ['https://tile'+(parseInt(Math.random()*5)+1)+'.navionics.com/tile/{z}/{x}/{y}?LAYERS=config_1_2_1&TRANSPARENT=FALSE&theme=0&navtoken='+naviToken],'tileSize': 256});
+				map.addLayer({'id': 'navl','source': 'nav','type': 'raster'});
+			}	
+		}
+		map.setStyle('mapbox://styles/mapbox/empty-v8');
+		//if()map.getSource('nav').tiles[0] = 'https://tile2.navionics.com/tile/{z}/{x}/{y}?LAYERS=config_1_2_0&TRANSPARENT=FALSE&theme=0&navtoken='+naviToken;
+		setTimeout(function(){
+			naviToken = navi.navToken;
+			if(naviToken==null){
+				//document.getElementById("navcm").click();
+			}else{
+				map.addSource('nav', {'type': 'raster','tiles': ['https://tile'+(parseInt(Math.random()*5)+1)+'.navionics.com/tile/{z}/{x}/{y}?LAYERS=config_1_2_'+(map.type=='nav'?"0":"1")+'&TRANSPARENT=FALSE&theme=0&navtoken='+naviToken],'tileSize': 256});
+				map.addLayer({'id': 'navl','source': 'nav','type': 'raster'});
+				rebuildMeasure();
+	setTimeout(function(){
+				rebuildMeasure();
+				map.addSource('nav', {'type': 'raster','tiles': ['https://tile'+(parseInt(Math.random()*5)+1)+'.navionics.com/tile/{z}/{x}/{y}?LAYERS=config_1_2_1&TRANSPARENT=FALSE&theme=0&navtoken='+naviToken],'tileSize': 256});
+				map.addLayer({'id': 'navl','source': 'nav','type': 'raster'});
+				rebuildMeasure();
+		 }, 1000);
+	setTimeout(function(){
+				rebuildMeasure();
+				//map.addSource('nav', {'type': 'raster','tiles': ['https://tile'+(parseInt(Math.random()*5)+1)+'.navionics.com/tile/{z}/{x}/{y}?LAYERS=config_1_2_1&TRANSPARENT=FALSE&theme=0&navtoken='+naviToken],'tileSize': 256});
+				map.addLayer({'id': 'navl','source': 'nav','type': 'raster'});
+				rebuildMeasure();
+		 }, 3000);
+	setTimeout(function(){
+				rebuildMeasure();
+				map.addSource('nav', {'type': 'raster','tiles': ['https://tile'+(parseInt(Math.random()*5)+1)+'.navionics.com/tile/{z}/{x}/{y}?LAYERS=config_1_2_1&TRANSPARENT=FALSE&theme=0&navtoken='+naviToken],'tileSize': 256});
+				map.addLayer({'id': 'navl','source': 'nav','type': 'raster'});
+				rebuildMeasure();
+		 }, 5000);
+	setTimeout(function(){
+				rebuildMeasure();
+				map.addSource('nav', {'type': 'raster','tiles': ['https://tile'+(parseInt(Math.random()*5)+1)+'.navionics.com/tile/{z}/{x}/{y}?LAYERS=config_1_2_1&TRANSPARENT=FALSE&theme=0&navtoken='+naviToken],'tileSize': 256});
+				map.addLayer({'id': 'navl','source': 'nav','type': 'raster'});
+				rebuildMeasure();
+		 }, 10000);
+
+
+
+
+			}
+		 }, 1000);
+		return;
+	}
+	
+
+}
+
+
+//filter stuff
+function showFilters(){
+	document.getElementById("filterList").style.right=(document.getElementById("filterList").style.right=="-400px" || document.getElementById("filterList").style.right == "" )?"0px":"-400px";
+	document.getElementById("searchbardiv").className="searchbarhidden";
+
+}
+function changeFilter(){
+	var e = window.event.target;
+	if(e.tagname!="LI")e=e.parentNode;
+	if(e.id=="selectAll"){
+		var fa = e.parentNode.children;
+		exclist=[];
+		for(var i = 1;i<fa.length;i++){
+			fa[i].className=e.className=="hideme"?"":"hideme";
+			if(e.className!="hideme")exclist.push(fa[i].id);
+		}
+		e.className=e.className=="hideme"?"":"hideme";
+	}else{
+		if(e.className=="hideme" ){exclist =  exclist .filter(a => a !== e.id && a !== "");}else{exclist.push(e.id);}
+		e.className=e.className=="hideme"?"":"hideme";
+		document.getElementById("selectAll").className = exclist.length==0?"":"hideme";
+	}
+	
+	localStorage.setItem('filters', exclist);
+	document.getElementsByClassName("filtersButton")[0].style.backgroundColor=exclist.length==0?"":"seagreen";
+	document.getElementById("filterSelectAllCheck").checked=exclist.length==0;
+
+	loadIcons();
+}
+document.getElementsByClassName("filtersButton")[0].style.backgroundColor=exclist.length==0?"":"seagreen";
+for(var i = 0;i<exclist.length;i++)document.getElementById(exclist[i]).className = "hideme";
+document.getElementById("filterSelectAllCheck").checked=exclist.length==0;
+document.getElementById("selectAll").className=exclist.length==0?"":"hideme";
+
+//admin feed stuff
+
+
+
+
+
+
+
+function checkLinks(){
+	if(event.target.tagName=="A"&&event.target.href.indexOf("zuluwaterways.com")>1&&(event.target.href.split("/")[4]=="icon"||event.target.href.split("/")[4]=="map")){
+		event.preventDefault();
+		gotoMarkerAdmin(event.target.href.split("/")[5]);
+	}
+	if(event.target.tagName=="A"&&event.target.href.indexOf("zuluwaterways.com")>1&&event.target.href.split("/").length==6){
+		event.preventDefault();
+		map.flyTo({center: [parseFloat(event.target.href.split("/")[5]),parseFloat(event.target.href.split("/")[4])],zoom: 13,essential: true});
+	}
+
+}
+
+//login stuff
+
+  var firebaseConfig = {apiKey: "AIzaSyCOgYtQBsfhkOvr7hp9qSveQ1KUYLW1FnQ", authDomain: "zulu-waterways-android.firebaseapp.com", databaseURL: "https://zulu-waterways-android.firebaseio.com", projectId: "zulu-waterways-android", storageBucket: "zulu-waterways-android.appspot.com", messagingSenderId: "1092550595258", appId: "1:1092550595258:web:ec05e8017cc4c3ad21a883"};
+  firebase.initializeApp(firebaseConfig);
+</script>
+<script>
+function doNothing(e){
+	 e = e || window.event;
+	e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+    return false;
+}
+function closeModal(){
+	document.getElementById("modalDiv").style.transform="scale(0)";
+	document.getElementById("loginModal").style.transform="scale(0)";
+	document.getElementById("changeNameModal").style.transform="scale(0)";
+
+}
+function showloginUI(){
+	if(currentUser==""){
+	if(/(Version\/\d+.*\/\d+.0.0.0 Mobile|; ?wv|(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari))/i.test(navigator.userAgent)){
+		//document.getElementById("popup1").innerHTML = "web detected!222"+(new Date()).toLocaleString();
+		window.open('https://www.zuluwaterways.com/views/close.html');
+		window.close();
+		closeModal();
+		return;
+	}
+ 	document.getElementById("modalDiv").style.transform="scale(1)";
+	document.getElementById("loginModal").style.transform="scale(1)";
+	firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+	this.ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth());
+	var uiConfig = {
+		callbacks: {
+				signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+					closeModal();
+					//document.getElementById("loginButton").innerHTML="Sign Out";
+					currentUser=authResult.user.email;
+					currentUserName=authResult.user.displayName;
+					currentUserId=authResult.user.uid;
+					if(currentUser=="zuluwaterways@gmail.com")showFeed();
+						return false;
+					}
+			},
+	  signInFlow: 'popup',
+	  signInOptions: [
+		firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+		'apple.com',
+		firebase.auth.EmailAuthProvider.PROVIDER_ID,
+		firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+	  ],
+	  tosUrl: 'https://www.zuluwaterways.com/term,',
+	  privacyPolicyUrl: 'https://www.zuluwaterways.com/term'
+	};	
+
+	this.ui.start('#firebaseui-auth-container', uiConfig);
+	}
+}
+function ldMap(t){
+	window.open('https://www.zuluwaterways.com/views/close.html?'+currentPopup._lngLat.lat+"/"+currentPopup._lngLat.lng+"/"+t);
+	window.close();
+}
+
+
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    	currentUser=firebase.auth().currentUser.email;
+	currentUserName=firebase.auth().currentUser.displayName;
+	currentUserId=firebase.auth().currentUser.uid;
+	document.getElementById("loginButton").innerHTML=((firebase.auth().currentUser.photoURL!=null && firebase.auth().currentUser.photoURL.length>3)?('<img src="'+firebase.auth().currentUser.photoURL+'">'):"")+' <span onclick="changeUsername()">'+currentUserName+"</span>";
+	document.getElementById("signOutButton").style.display="";
+
+	if(currentUser=="zuluwaterways@gmail.com")document.getElementsByClassName("adminButton")[0].style.display="block";
+	document.getElementById("myMarkersButton").style.display="block";
+  } else {
+   	currentUser="";
+	currentUserName="";
+	currentUserId="";
+    	document.getElementById("loginButton").innerHTML="<a>Login</a>";
+	document.getElementById("signOutButton").style.display="none";
+	document.getElementById("myMarkersButton").style.display="none";
+
+  }
+});
+
+getRandomLink();
+if(/(Version\/\d+.*\/\d+.0.0.0 Mobile|; ?wv|(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari))/i.test(navigator.userAgent)){
+	document.getElementById("onlineDiv").innerHTML="Online Mode";
+}
+//document.getElementById("popup1").innerHTML = navigator.userAgent;
+if(localStorage.newCharts == "comp")document.getElementById("popup1").style.transform="scale(0)";
+</script>
+   <!--<link rel="stylesheet" href="https://webapiv2.navionics.com/dist/webapi/webapi.min.css" >
+    <script type="text/javascript" src="https://webapiv2.navionics.com/dist/webapi/webapi.min.no-dep.js"></script>
+	-->
+<script src='/js/main.js'></script>
+<script src='https://unpkg.com/panzoom@9.4.0/dist/panzoom.min.js'></script>
+</body>

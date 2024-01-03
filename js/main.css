@@ -1,0 +1,1061 @@
+.marker{
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+max-height:7vw;
+  max-width:7vw;
+
+  border-radius: 3%;
+  cursor: pointer;
+}
+@media only screen and (max-width: 600px) {
+.marker{
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+  max-height:7vw;
+  max-width:7vw;
+  border-radius: 3%;
+  cursor: pointer;
+}
+}
+.mapboxgl-ctrl-bottom-right{
+	z-index:0;
+}
+.mapboxgl-popup {
+  max-width: 400px;
+  ms-overflow-style: none;
+  scrollbar-width: none;
+  z-index:2;
+  max-height:87vh;
+}
+.mapboxgl-popup::-webkit-scrollbar {
+  display: none;
+}
+
+.mapboxgl-popup-content {
+  text-align: center;
+  font-family: 'Open Sans', sans-serif;
+  max-Height:500px;
+  max-width:80vw;
+  border: 5px inset rgba(28,110,164,0.5);
+  border-radius: 15px;
+  -webkit-box-shadow: 5px 5px 15px 5px #000000; 
+  box-shadow: 5px 5px 15px 5px #000000;  
+  overflow: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+      cursor: default;
+}
+.mapboxgl-popup-content::-webkit-scrollbar {
+  display: none;
+}
+ .mapboxgl-popup-close-button {
+font-size: 18px; 
+font-family: Tahoma, Verdana, sans-serif;
+ color: #c3c3c3; 
+font-weight: bold;
+padding:3px;
+ border:none;
+ outline:none;
+}
+.infoHeader{
+ max-width:400px;
+ min-height:70px;
+}
+.markerInfoIcon {
+  background-size: cover;
+  width: 70px;
+  height: 70px;
+  max-height:12vw;
+  max-width:12vw;
+  border-radius: 3%;
+  margin:5px;
+  float:left;	
+  display: flex;
+  align-items: flex-end;
+  text-align: center;
+  justify-content: center;
+  
+}
+.markerInfoTitle {
+	width:280px;
+	float:left;
+	max-width:63vw;
+	font-size:25px;
+}
+.markerInfoSubtitle {
+	width:280px;
+	max-width:63vw;
+	float:left;
+}
+.newMarkerDesc{
+	min-height:100px;
+	font-size:1.4em;
+	text-align:left;
+}
+.newMarkerTitle{
+
+}
+.newMarkerTitle[placeholder]:empty:before {
+    content: attr(placeholder);
+    color: #555; 
+}
+
+.newMarkerTitle[placeholder]:empty:focus:before {
+    content: "";
+}
+.newMarkerDesc{
+
+}
+.newMarkerDesc[placeholder]:empty:before {
+    content: attr(placeholder);
+    color: #555; 
+}
+
+.newMarkerDesc[placeholder]:empty:focus:before {
+    content: "";
+}
+.mapboxgl-ctrl-scale{
+	color:white;
+	background:rgba(0,0,0,0.25);
+	border:3px solid #fff;
+	border-top: #3333;
+	font-size:1.5em;
+	text-align:center;
+	position:fixed;
+	top:2vh;
+	margin:0 auto;
+	right:0;
+	left:0;
+
+}
+#latlondiv{
+	position:fixed;
+	top:calc(2vh + 30px);
+	left: 0;
+    	right: 0;
+    	background: rgba(0,0,0,0.25);
+    	width: fit-content;
+    	padding: 3px;
+	text-align:center;
+	color:white;
+	margin:0 auto; 
+}
+#closeSearch{
+	position:fixed;
+	top:80px;
+	right:30px;
+	z-index:9003;
+	font-size:50px;
+    	color: white;
+    	filter: drop-shadow(0px 3px 3px rgba(256, 256, 256, 0.7));
+}
+.saveNMButton{
+    width: 60%;
+    margin: 5px auto;
+    background: rgb(2, 150, 204);
+    color: white;
+    line-height: 40px;
+    font-size: 40px;
+    text-align: center;
+    font-weight: bold;
+    border: 2px solid white;
+    box-shadow: 5px 5px 15px 5px #000000;
+}
+.saveNMBError{
+	width:100%;
+	padding:5px;
+	color:red;
+}
+
+
+#filterList{
+    position: fixed;
+    height: 98%;
+    width: 350px;
+    max-width: 90%;
+    overflow: scroll;
+    top: 0;
+    right: -400px;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 3;
+    padding: 25px;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+#filterList::-webkit-scrollbar {
+  display: none;
+}
+#filterList li {
+  cursor: pointer;
+  color:white;
+padding:3px;
+list-style:none;
+}
+#filterList .hideme{
+	color:darkgreen;
+}
+#filterList span{
+display: inline-block;
+  vertical-align: middle;
+font-size:1.3em;
+}
+#filterList li div{
+  background-size: cover;
+  width: 20px;
+display:inline-block;
+  height: 20px;
+  border-radius: 3%;
+vertical-align: middle;
+}
+.mapboxgl-ctrl-geolocate button{
+	display:none;
+}
+.reposButton{
+    position: fixed;
+    width: 70px;
+    height: 70px;
+    left: 0;
+    top: 0;
+    z-index: 999;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    filter: drop-shadow(0px 3px 3px rgba(256, 256, 256, 0.7));
+    background-size: cover;
+    background-image: url("../images/center.png");
+    //background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='dimgrey' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'></circle><circle cx='12' cy='12' r='6'></circle><circle cx='12' cy='12' r='2'></circle><line x1='12' y1='5' x2='12' y2='19'></line><line x1='5' y1='12' x2='19' y2='12'></line></svg>");
+}
+.a58aba649b0fb4d1a34428dfa{ background-image: url('https://api.zuluwaterways.com/icons/58aba649b0fb4d1a34428dfa.png'); }
+.a58ad28eca489a8326c16c74e{ background-image: url('https://api.zuluwaterways.com/icons/58ad28eca489a8326c16c74e.png'); }
+.a591179728302183faf7a51b6{ background-image: url('https://api.zuluwaterways.com/icons/591179728302183faf7a51b6.png'); }
+.a5a9cd44cf6faf80f19d63d2c{ background-image: url('https://api.zuluwaterways.com/icons/5a9cd44cf6faf80f19d63d2c.png'); }
+.a5bb4acebaa62a013b68039d9{ background-image: url('https://api.zuluwaterways.com/icons/5bb4acebaa62a013b68039d9.png'); }
+.a58aba65ab0fb4d1a34428dfb{ background-image: url('https://api.zuluwaterways.com/icons/58aba65ab0fb4d1a34428dfb.png'); }
+.a58ad2902a489a8326c16c74f{ background-image: url('https://api.zuluwaterways.com/icons/58ad2902a489a8326c16c74f.png'); }
+.a59165bd8797b3a2e1e8c4f3b{ background-image: url('https://api.zuluwaterways.com/icons/59165bd8797b3a2e1e8c4f3b.png'); }
+.a5aac624354f78f15b2e542e8{ background-image: url('https://api.zuluwaterways.com/icons/5aac624354f78f15b2e542e8.png'); }
+.a5bcd413caa62a013b6803bdd{ background-image: url('https://api.zuluwaterways.com/icons/5bcd413caa62a013b6803bdd.png'); }
+.a58aba663b0fb4d1a34428dfc{ background-image: url('https://api.zuluwaterways.com/icons/58aba663b0fb4d1a34428dfc.png'); }
+.a58ad2910a489a8326c16c750{ background-image: url('https://api.zuluwaterways.com/icons/58ad2910a489a8326c16c750.png'); }
+.a59165ca0797b3a2e1e8c4f3c{ background-image: url('https://api.zuluwaterways.com/icons/59165ca0797b3a2e1e8c4f3c.png'); }
+.a5aac62db54f78f15b2e542e9{ background-image: url('https://api.zuluwaterways.com/icons/5aac62db54f78f15b2e542e9.png'); }
+.a5beccf95302f9230e77f3021{ background-image: url('https://api.zuluwaterways.com/icons/5beccf95302f9230e77f3021.png'); }
+.a58aba66bb0fb4d1a34428dfd{ background-image: url('https://api.zuluwaterways.com/icons/58aba66bb0fb4d1a34428dfd.png'); }
+.a58ad292da489a8326c16c752{ background-image: url('https://api.zuluwaterways.com/icons/58ad292da489a8326c16c752.png'); }
+.a5964b99d1130e05f3a97d77f{ background-image: url('https://api.zuluwaterways.com/icons/5964b99d1130e05f3a97d77f.png'); }
+.a5aac668854f78f15b2e542eb{ background-image: url('https://api.zuluwaterways.com/icons/5aac668854f78f15b2e542eb.png'); }
+.a5d927cfb8d1c69415a36bbab{ background-image: url('https://api.zuluwaterways.com/icons/5d927cfb8d1c69415a36bbab.png'); }
+.a58aba675b0fb4d1a34428dfe{ background-image: url('https://api.zuluwaterways.com/icons/58aba675b0fb4d1a34428dfe.png'); }
+.a58ad293ea489a8326c16c753{ background-image: url('https://api.zuluwaterways.com/icons/58ad293ea489a8326c16c753.png'); }
+.a5964bf501130e05f3a97d780{ background-image: url('https://api.zuluwaterways.com/icons/5964bf501130e05f3a97d780.png'); }
+.a5ac1c98fc101f104c22f64e3{ background-image: url('https://api.zuluwaterways.com/icons/5ac1c98fc101f104c22f64e3.png'); }
+.a5d92930719cd4760431b4a67{ background-image: url('https://api.zuluwaterways.com/icons/5d92930719cd4760431b4a67.png'); }
+.a58aba67bb0fb4d1a34428e00{ background-image: url('https://api.zuluwaterways.com/icons/58aba67bb0fb4d1a34428e00.png'); }
+.a58ad295ca489a8326c16c754{ background-image: url('https://api.zuluwaterways.com/icons/58ad295ca489a8326c16c754.png'); }
+.a599d6e954986e2543f6cac0e{ background-image: url('https://api.zuluwaterways.com/icons/599d6e954986e2543f6cac0e.png'); }
+.a5ad41f31c101f104c22f68a8{ background-image: url('https://api.zuluwaterways.com/icons/5ad41f31c101f104c22f68a8.png'); }
+.a5d92934619cd4760431b4a68{ background-image: url('https://api.zuluwaterways.com/icons/5d92934619cd4760431b4a68.png'); }
+.a58ad27c2a489a8326c16c746{ background-image: url('https://api.zuluwaterways.com/icons/58ad27c2a489a8326c16c746.png'); }
+.a58ad297da489a8326c16c755{ background-image: url('https://api.zuluwaterways.com/icons/58ad297da489a8326c16c755.png'); }
+.a599d731b4986e2543f6cac19{ background-image: url('https://api.zuluwaterways.com/icons/599d731b4986e2543f6cac19.png'); }
+.a5af17f53293d912df618fcc1{ background-image: url('https://api.zuluwaterways.com/icons/5af17f53293d912df618fcc1.png'); }
+.a5dcdf8126c15f862e988756b{ background-image: url('https://api.zuluwaterways.com/icons/5dcdf8126c15f862e988756b.png'); }
+.a58ad27f5a489a8326c16c747{ background-image: url('https://api.zuluwaterways.com/icons/58ad27f5a489a8326c16c747.png'); }
+.a58ad2b81a489a8326c16c756{ background-image: url('https://api.zuluwaterways.com/icons/58ad2b81a489a8326c16c756.png'); }
+.a599d7a2e4986e2543f6cac22{ background-image: url('https://api.zuluwaterways.com/icons/599d7a2e4986e2543f6cac22.png'); }
+.a5af17ff7293d912df618fcc2{ background-image: url('https://api.zuluwaterways.com/icons/5af17ff7293d912df618fcc2.png'); }
+.a5f4307fd091b012f977176f5{ background-image: url('https://api.zuluwaterways.com/icons/5f4307fd091b012f977176f5.png'); }
+.a58ad2820a489a8326c16c748{ background-image: url('https://api.zuluwaterways.com/icons/58ad2820a489a8326c16c748.png'); }
+.a58bf6a12848130142cd8a382{ background-image: url('https://api.zuluwaterways.com/icons/58bf6a12848130142cd8a382.png'); }
+.a5a23dfbce589ae23f0537e18{ background-image: url('https://api.zuluwaterways.com/icons/5a23dfbce589ae23f0537e18.png'); }
+.a5b0782fe378a164ca2cf6d14{ background-image: url('https://api.zuluwaterways.com/icons/5b0782fe378a164ca2cf6d14.png'); }
+.a5fa8967438270553de01cfde{ background-image: url('https://api.zuluwaterways.com/icons/5fa8967438270553de01cfde.png'); }
+.a58ad2877a489a8326c16c749{ background-image: url('https://api.zuluwaterways.com/icons/58ad2877a489a8326c16c749.png'); }
+.a58bf6a24848130142cd8a383{ background-image: url('https://api.zuluwaterways.com/icons/58bf6a24848130142cd8a383.png'); }
+.a5a3079895f0fd678321a1764{ background-image: url('https://api.zuluwaterways.com/icons/5a3079895f0fd678321a1764.png'); }
+.a5b3ac698378a164ca2cf7e58{ background-image: url('https://api.zuluwaterways.com/icons/5b3ac698378a164ca2cf7e58.png'); }
+.a5fa9b3936fe23563b5666cb3{ background-image: url('https://api.zuluwaterways.com/icons/5fa9b3936fe23563b5666cb3.png'); }
+.a58ad2891a489a8326c16c74a{ background-image: url('https://api.zuluwaterways.com/icons/58ad2891a489a8326c16c74a.png'); }
+.a58bf6a34848130142cd8a384{ background-image: url('https://api.zuluwaterways.com/icons/58bf6a34848130142cd8a384.png'); }
+.a5a307c055f0fd678321a1766{ background-image: url('https://api.zuluwaterways.com/icons/5a307c055f0fd678321a1766.png'); }
+.a5b444483378a164ca2cf815b{ background-image: url('https://api.zuluwaterways.com/icons/5b444483378a164ca2cf815b.png'); }
+.a5fa9b3be6fe23563b5666cb4{ background-image: url('https://api.zuluwaterways.com/icons/5fa9b3be6fe23563b5666cb4.png'); }
+.a58ad28aea489a8326c16c74b{ background-image: url('https://api.zuluwaterways.com/icons/58ad28aea489a8326c16c74b.png'); }
+.a58bf6a44848130142cd8a385{ background-image: url('https://api.zuluwaterways.com/icons/58bf6a44848130142cd8a385.png'); }
+.a5a4d6298eab59d15cd729fdf{ background-image: url('https://api.zuluwaterways.com/icons/5a4d6298eab59d15cd729fdf.png'); }
+.a5b699090e0d1962ee6397e0e{ background-image: url('https://api.zuluwaterways.com/icons/5b699090e0d1962ee6397e0e.png'); }
+.a5fa9b3df6fe23563b5666cb5{ background-image: url('https://api.zuluwaterways.com/icons/5fa9b3df6fe23563b5666cb5.png'); }
+.a58ad28c8a489a8326c16c74c{ background-image: url('https://api.zuluwaterways.com/icons/58ad28c8a489a8326c16c74c.png'); }
+.a58cbfb5a29121b584bbd7de3{ background-image: url('https://api.zuluwaterways.com/icons/58cbfb5a29121b584bbd7de3.png'); }
+.a5a4d6308eab59d15cd729fe0{ background-image: url('https://api.zuluwaterways.com/icons/5a4d6308eab59d15cd729fe0.png'); }
+.a5b8c5f64662730276fedc26c{ background-image: url('https://api.zuluwaterways.com/icons/5b8c5f64662730276fedc26c.png'); }
+.a5fa9b4026fe23563b5666cb6{ background-image: url('https://api.zuluwaterways.com/icons/5fa9b4026fe23563b5666cb6.png'); }
+.a58ad28dfa489a8326c16c74d{ background-image: url('https://api.zuluwaterways.com/icons/58ad28dfa489a8326c16c74d.png'); }
+.a58e61511ef98565ff8ccfe84{ background-image: url('https://api.zuluwaterways.com/icons/58e61511ef98565ff8ccfe84.png'); }
+.a5a7915cbdbbbf134447fc4d7{ background-image: url('https://api.zuluwaterways.com/icons/5a7915cbdbbbf134447fc4d7.png'); }
+.a5b9312e6aa62a013b6802751{ background-image: url('https://api.zuluwaterways.com/icons/5b9312e6aa62a013b6802751.png'); }
+.a5fb16690a544c5546230d6ec{ background-image: url('https://api.zuluwaterways.com/icons/5fb16690a544c5546230d6ec.png'); }
+.b37{ background-image: url('https://api.zuluwaterways.com/icons/motor.png') !important; }
+.b70{ background-image: url('https://api.zuluwaterways.com/icons/cargo.png') !important; }
+.b71{ background-image: url('https://api.zuluwaterways.com/icons/cargo.png') !important; }
+.b80{ background-image: url('https://api.zuluwaterways.com/icons/cargo.png') !important; }
+.b89{ background-image: url('https://api.zuluwaterways.com/icons/cargo.png') !important; }
+.b79{ background-image: url('https://api.zuluwaterways.com/icons/cargo.png') !important; }
+.b52{ background-image: url('https://api.zuluwaterways.com/icons/tug.png') !important; }
+.b50{ background-image: url('https://api.zuluwaterways.com/icons/tug.png') !important; }
+.b60{ background-image: url('https://api.zuluwaterways.com/icons/ferry.png') !important; }
+.b69{ background-image: url('https://api.zuluwaterways.com/icons/ferry.png') !important; }
+.b40{ background-image: url('https://api.zuluwaterways.com/icons/ferry.png') !important; }
+.measureicon{
+	background-size: cover;
+	background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='red' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-map-pin'><path d='M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z'></path><circle fill='black' cx='12' cy='10' r='3'></circle></svg>");
+}
+* {
+  margin: 0;
+  padding: 0;
+}
+.fab-menu a {
+  text-decoration: none;
+}
+
+.fab-menu {
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index:99;
+} 
+.layerIcon{
+	background-size: cover;
+	background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='-5 -5 35 35' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polygon points='12 2 2 7 12 12 22 7 12 2'></polygon><polyline points='2 17 12 22 22 17'></polyline><polyline points='2 12 12 17 22 12'></polyline></svg>");
+}
+.mainIcon{
+	background-size: cover; 
+	background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='-5 -5 35 35' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='1'></circle><circle cx='12' cy='5' r='1'></circle><circle cx='12' cy='19' r='1'></circle></svg>");
+}
+.naviIcon{
+	left: 25px;
+	bottom: 25px;
+	position: fixed;
+	width: 50px;
+  	height: 50px;
+	background:rgb(2, 150, 204);
+  	border: 2px solid white;
+  	background-size: cover;
+	border-radius: 50%;
+	cursor: pointer;
+	background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='-5 -5 35 35' fill='white' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' ><polygon points='12 2 19 21 12 17 5 21 12 2'></polygon></svg>");
+}
+
+.fab-add{
+  position: fixed;
+  right: 25px;
+  bottom: 25px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  cursor: pointer;
+  background:rgb(2, 150, 204);
+  border: 2px solid white;
+  background-size: cover;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='-5 -5 35 45' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' ><path d='M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z'></path><circle cx='12' cy='10' r='3'></circle><line stroke-width='4'  x1='18' y1='36' x2='18' y2='20'></line><line stroke-width='4'  x1='10' y1='28' x2='26' y2='28'></line></svg>");
+}
+
+.menu-box {
+  position:relative;
+  border: 2px black;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  transition:0.4;
+}
+.menu-circle{
+  position:absolute;
+  top: 0;  
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin:auto;
+  width: 50px;
+  height: 50px;
+  background-color:rgb(2, 150, 204);
+  border: 2px solid white;
+  border-radius:51%;
+  transition:0.4s;
+  color:white;
+  text-align:center;
+  font-size:45px;
+}
+.menu-circle{
+  transform:scale(1.1);
+  transition:0.2s;
+}
+
+.menu-items {
+  position: relative;
+  width: 130px;
+  right:35px;
+  margin: 0;
+  padding: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  transform: translateY(-40%) scale(0) translateX(-30%);
+  transition: 0.4s;
+}
+.mapTypeButton{
+	text-align:center;
+}
+
+
+.menu-items li {
+  width: 120px;
+  padding: 0px;
+  list-style: none;
+}
+.menu-items li a{
+	margin: 0px; 
+	display: block; 
+	width: 100%; 
+	height: 25px;
+	padding:5px;
+}
+.menu-items li:hover {
+  background-color: gray;
+}
+
+.menu-items a {
+  color: #fff;
+  line-height: 1.5;
+}
+
+.fab-menu input {
+  position: absolute;
+    left: -1000rem;
+}
+
+.fab-menu input:checked +.menu-box {
+  border: 5px white;
+  transition:0.4s;
+}
+
+.fab-menu input:checked +.menu-box .menu-circle {
+  background-color: rgba(0,0,0,0.95);
+  transition:0.4s;
+}
+
+.fab-menu input:checked +.menu-box .menu-items{
+  transform: translateY(65px) scale(1)  translateX(-40px);
+  transition: 0.4s;
+}
+.relocate{
+	height:15px;
+	width:15px;
+	display:inline-block;
+	background-size: cover;
+  	background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='5 9 2 12 5 15'></polyline><polyline points='9 5 12 2 15 5'></polyline><polyline points='15 19 12 22 9 19'></polyline><polyline points='19 9 22 12 19 15'></polyline><line x1='2' y1='12' x2='22' y2='12'></line><line x1='12' y1='2' x2='12' y2='22'></line></svg>");
+}
+
+#modalDiv{
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    transform: scale(0);
+    z-index: 999;
+background: rgba(0, 0, 0, 0.8);
+    animation: fadeIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+#loginModal{
+	display: flex;
+	padding:20px;
+	background:white;
+	transform: scale(0);
+animation: fadeIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+
+}
+
+#testbox{
+	max-width:400px;
+	margin:0 auto;
+	position:fixed;
+	top:40%;
+	left:40%;
+	background:white;
+}
+.spacer{
+	width:400px;
+	height:600px;
+}
+#markerIconDropdown{
+	padding:0;
+	margin:0;
+	list-style:none;
+}
+#markerIconDropdown li {
+    display:inline-block;
+    border:1px solid grey;
+    position:relative;
+    width: 80%;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+#markerIconDropdown li ul {
+    position:absolute;
+    border:1px solid grey;
+    width:100%;
+    max-height:0;
+    overflow:hidden;
+    -moz-transition: 1s;
+    -ms-transition: 1s;
+    -o-transition: 1s;
+    -webkit-transition: 1s;
+    transition: 1s;
+}
+#markerIconDropdown li:hover ul {
+    overflow:auto;
+    max-height:50px;
+}
+#markerIconDropdown li div{
+	width:40px;
+	height:40px;
+	display:inline-block;
+	background-size: cover;
+	vertical-align: middle;
+}
+#tagSearchDiv{
+    max-height: 200px;
+    overflow: scroll;
+}
+#tagSearchDiv::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}
+#tagsList{
+	display:inline-block;
+	font-size:1.2em;
+	min-height: 25px;
+}
+#tagseditspan{
+	font-size:1.2em;
+	float:left;
+}
+#tagAddButton{
+	color: white;
+    background-color: seagreen;
+    border: 2px solid white;
+    border-radius: 51%;
+    text-align: center;
+    font-size: 25px;
+    position: absolute;
+    right: 5px;
+    line-height: 25px;
+    width: 30px;
+    font-weight: 900;
+}
+#taginput{
+	font-size:1.5em;
+	padding:3px;
+	width:90%;
+}
+.searchTag {
+	display:inline-block;
+	padding:3px;
+	margin:2px;
+	color:white;
+	background:seagreen;
+    	border: 1px solid rgba(27, 31, 35, .15);
+    	border-radius: 6px;
+    	box-shadow: rgb(27 31 35 / 10%) 3px 3px 0;
+	
+}
+.searchTag:hover{
+	background:steelblue;
+}
+.deleteTag{
+	background:red;
+	color:white;
+  	border-radius:51%;
+  	    font-size: 25px;
+    margin: -15px;
+    padding: 3px;
+    position: relative;
+    right: -10px;
+    top: -10px;
+    line-height: 30px;
+    width: 40px;
+	box-shadow: 0px 0px 30px 0px grey;
+font-weight: 900;
+}
+.measureShareButton{
+	height:25px;
+	left:5px;
+	color:white;
+	font-size: calc( 10px + 0.5vw);
+	text-align:center;
+}
+#searchbardiv{
+    margin: 0 auto;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    transition: all 0.5s ease-in-out;
+    z-index: 99;
+    background: rgba(0,0,0,0.3);
+    width: 100%;
+    transition: all 0.5s ease-in-out;
+    z-index: 95; 
+    text-align: center;
+}
+.searchbarhidden {
+  transform: translateY(-150%);
+}
+#searchOptions{
+	display:inline-block;
+	margin: 7px;
+    	font-size: 1.2em;
+}
+#searchOptions label{
+	white-space:nowrap;
+}
+#searchbardiv input{
+	font-size:3em;
+	margin:5px;
+	max-width:90%;
+	color:grey;
+}
+#searchbardiv label{
+	color:white;
+}
+#searchResults{
+	    width: fit-content;
+    max-width: 90%;
+    background: white;
+    margin: 0 auto;
+    overflow: scroll;
+    max-height: 500px;
+	list-style-type:none;
+}
+#searchResults::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}
+.searchresultsIcon {
+    background-size: cover;
+    width: 30px;
+    height: 30px;
+    position: relative;
+    display: inline-block;
+}
+.searchresultstitle{
+	display: inline-block;
+	font-size:25px;
+	max-width:90%;
+}
+.infoPic{
+	width:100%;
+}
+.spinner {
+  position: relative;
+  width: 45px;
+  height: 45px;
+  margin: 0 auto;
+}
+
+.bubble-1,
+.bubble-2 {
+  position: absolute;
+  top: 0;
+  width: 25px;
+  height: 25px;
+  border-radius: 100%;
+  background-color: #4b9cdb;
+}
+
+.bubble-2 {
+  top: auto;
+  bottom: 0;
+}
+
+
+
+.l-9 {
+  animation-delay: 1.44s;
+}
+
+.load-9 .spinner {
+  animation: loadingI 2s linear infinite;
+}
+.load-9 .bubble-1,
+.load-9 .bubble-2 {
+  animation: bounce 2s ease-in-out infinite;
+}
+.load-9 .bubble-2 {
+  animation-delay: -1s;
+}
+
+@keyframes loadingI {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1);
+  }
+}
+#picButton{
+	display:inline-block;
+	background-size: cover; 
+	background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' ><path d='M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z'></path><circle cx='12' cy='13' r='4'></circle></svg>");
+	width:40px;
+	height:40px;
+}
+
+.markerPicBar img{
+	max-width:20%;
+}
+.markerPicBar{
+	padding:5px;
+}
+.markerPicBar div{
+	display:inline;
+	vertical-align: middle;
+	margin:1%;
+}
+.commentsAuth{
+	float:right;
+}
+#commentButton{
+	vertical-align:top;
+	padding:3px;
+	color:white;
+	font-size:1.2em;
+	background-color:rgb(2, 150, 204);
+  	border: 2px solid white;
+  	border-radius:5px;
+}
+#commentText{
+	min-width:280px;
+}
+#imgModal{
+	position:fixed;
+	height:100%;
+	top:0;
+	width:100%;
+	background:rgb(0,0,0,0.7);
+	z-index:1001;
+}
+#modalImage{
+	width:100%;
+	transform: translateY(30vh);
+}
+#imgModalClose{
+	position:fixed;
+	top:20px;
+	right:20px;
+	font-size:6em;
+	font-weight:bolder;
+	color:grey;
+	z-index:1005;
+}
+#bottomButtons{
+	cursor:pointer;
+}
+.fb{
+	left:50px;
+}
+.sideButton{
+	position:fixed;
+	top:50%;
+	height:50px;
+	width:50px;
+	max-height:10vw;
+	max-width:10vw;
+	z-index:5;
+	box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+	background-size: cover;
+	border: 2px solid white;
+    	background-color: rgb(2, 150, 204);
+}
+.measureButton{
+	left:5px;
+	background-image: url("data:image/svg+xml;utf8,<svg width='60' height='60' xmlns='http://www.w3.org/2000/svg' fill='none' stroke-linejoin='round' stroke-linecap='round' stroke-width='3' stroke='white'><path d='m56.64367,14.64121c0,7 -9,13 -9,13s-9,-6 -9,-13a9,9 0 0 1 18,0z' id='svg_1' stroke='null'/><circle cx='47.64367' cy='14.64121' r='3' id='svg_2' stroke='null'/><path d='m24.81052,39.66865c0,7 -9,13 -9,13s-9,-6 -9,-13a9,9 0 0 1 18,0z' id='svg_3' stroke='null'/><circle cx='15.81052' cy='39.66866' r='3' id='svg_4' stroke='null'/><path id='svg_5' d='m16.06573,52.9672l32.84625,-3.10282l-32.2434,-32.70418l30.6094,10.39767' opacity='undefined' stroke='null' fill='none'/></svg>");
+}
+.filtersButton{
+	background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='-5 -5 35 35' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' ><polygon points='22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3'></polygon></svg>");
+}
+
+.measureMarker{
+  background-size: cover;
+  width: 40px;
+  height: 40px;
+max-height:7vw;
+  max-width:7vw;
+  border-radius: 3%;
+  cursor: pointer;
+}
+#adminFeed{
+	position:fixed;
+	height:80%;
+	top:15%;
+	max-width:500px;
+	overflow:scroll;
+	z-index:4;
+	background:rgba(0,0,0,0.5);
+	
+}
+#adminFeed::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}
+
+.adminButton{
+	z-index:5;
+	left:5px;
+	display:
+	none;
+	top:30%;
+	background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' ><polyline points='22 12 18 12 15 21 9 3 6 12 2 12'></polyline></svg>");
+}
+#adminFeed li{
+	margin:2px;
+	padding:2px;
+	background:lightgrey;
+	list-style:none;
+}
+#adminFeed div{
+	
+	display:inline-block;
+	font-size:10px;
+	background:dimgrey;
+	color:white;
+	margin:1px;
+	vertical-align: top;
+}
+
+#adminFeed button{
+	float:right;
+}
+#myMarkersButton{
+	display:none;
+}
+.adel{
+	border: 2px solid black;
+    	background-color: rgb(2, 150, 204);
+	    border-radius: 5px;
+    padding: 3px;
+    margin: 2px;
+    height: 12px;
+    width: 12px;
+    position: absolute;
+    right: 3px;
+    top: 60px;
+    font-size: 12px;
+    line-height: 12px;
+    color: white;
+}
+.zwPremium {
+	background: lavender;
+}
+#searchTagsList{
+	width: 700;
+    max-width: 90%;
+    margin: 0 auto;
+    overflow: scroll;
+    max-height: 200px;
+}
+#searchTagsList::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}
+#searchResults li:hover {
+  background-color: lightgray;
+}
+
+
+.pblurb {
+    background: beige;
+}
+#loginButton img{
+    border-radius: 50%;
+    border: solid;
+    height: 25px;
+	margin:3px;
+    display:inline-block;
+}
+#loginButton{
+	color:white;
+	display:flex;
+}
+#changeNameModal{
+	display:none;
+	background:white;
+	width:400px;
+	transform: scale(0);
+animation: fadeIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+
+}
+#changenameDiv{
+	padding:20px;
+	border:solid 2px aliceblue;
+	border-raduis:5px;
+	text-align:center;
+}
+#newNameInput{
+	    font-size: 1.4em;
+    max-width: 70%;
+	box-shadow: 0 0 5px 5px lightgrey;
+    margin: 7px;
+}
+#changenameDiv button{
+	font-size: 1.5em;
+    box-shadow: 0 0 5px 5px lightgrey;
+    background-size: cover;
+    border: 2px solid white;
+    background-color: rgb(2, 150, 204);
+    color: white;
+    width: 20%;
+}
+#exploreDiv{
+	position:fixed;
+	bottom:0;
+	left:calc(50% - 50px);
+	width:100px;
+	background-color:rgba(0,0,0,0.3);
+	text-align:center;
+	margin:5px;
+}
+#exploreDiv a{
+	color:white;
+	text-decoration:none;
+}
+#northIcon{
+ padding:3px;
+ background-size: cover;
+    border: 2px solid white;
+    background-color: rgb(2, 150, 204);
+    color: white;
+ position:fixed;
+   left:39;
+   font-size: 25px;
+   bottom:75;
+   display:none;
+}
+.mapboxgl-user-location-dot{
+	background-color: transparent;
+	background-size: cover;
+	width:50px;
+	height:50px;
+	background-image: url("data:image/svg+xml;utf8,<?xml version='1.0' encoding='iso-8859-1'?><!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'><svg version='1.1' id='Capa_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px'	 viewBox='0 0 293.501 293.501' style='enable-background:new 0 0 293.501 293.501;' xml:space='preserve'><path d='M287.022,259.652l-43.031,29.778c-2.505,1.729-5.478,2.803-8.521,2.803H40.5c-4.375,0-8.531-2.058-11.382-5.377	l-25.5-29.852c-3.816-4.446-4.695-10.708-2.248-16.033c2.446-5.325,7.77-8.737,13.63-8.737h263.5c6.565,0,12.367,4.27,14.32,10.537	C294.775,249.038,292.424,255.923,287.022,259.652z M146.75,213.234h120.06c5.522,0,10.598-3.284,13.212-8.148	c2.615-4.864,2.346-10.896-0.701-15.502L159.261,8.021c-3.652-5.521-10.661-8.026-16.999-6.12	c-6.339,1.907-10.845,7.713-10.845,14.333v181.5C131.417,206.018,138.466,213.234,146.75,213.234z M26.691,213.234h58.682	c8.284,0,15.045-7.216,15.045-15.5V36.078c0-7.282-5.252-13.512-12.424-14.773c-7.167-1.258-14.225,2.811-16.709,9.655	L12.597,192.615c-1.669,4.598-0.994,9.971,1.814,13.977C17.217,210.599,21.799,213.234,26.691,213.234z'/></svg>");
+}
+.mapboxgl-user-location-dot:after{
+	border:none;
+	background:none;
+}
+#disModal{
+	z-index: 1;
+	position: fixed;
+    width: 90%;
+    max-width: 900px;
+    margin: 0 auto;
+    color: white;
+    padding: 2%;
+    font-size: 1.8vh;
+    background: rgba(0,0,0,0.7);
+    border-radius: 25px;
+	text-align: center;
+}
+#closeDisModal{
+	height: 50px;
+    width: 150px;
+    max-height: 10vw;
+    max-width: 10vw;
+    z-index: 5;
+    box-shadow: rgb(0 0 0 / 30%) 0px 19px 38px, rgb(0 0 0 / 22%) 0px 15px 12px;
+    background-size: cover;
+    border: 2px solid white;
+    background-color: rgb(2, 150, 204);
+	color:white;
+	font-size: x-large;
+	margin: 20px auto;
+}
+#commentsDiv li{
+	margin:5px;
+	border-radius: 5px;
+	list-style-type: disclosure-closed;
+    background: rgba(0,0,0,0.05);
+}
+.aismarker{
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+max-height:7vw;
+  max-width:7vw;
+  background-image: url('https://api.zuluwaterways.com/icons/boat.png');
+  border-radius: 3%;
+  cursor: pointer;
+}
+.cBut{
+	background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='-5 -5 35 35' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' ><circle cx='12' cy='8' r='7'/><polyline points='8.21 13.89 7 23 12 20 17 23 15.79 13.88'/></svg>");
+}
+.sBut{
+	background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='-5 -5 35 35' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' ><path d='M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8'/><polyline points='16 6 12 2 8 6'/><line x1='12' y1='2' x2='12' y2='15'/></svg>");
+}
+.rBut{
+	background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='-5 -5 35 35' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' ><path d='M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z'/><line x1='12' y1='9' x2='12' y2='13'/><line x1='12' y1='17' x2='12.01' y2='17'/></svg>");
+}
+.tBut{
+	background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='-5 -5 35 35' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' ><path d='M 22.084 11.607 C 22.069 11.336 20.329 0.332 15.913 11.735 C 10.512 31.692 10.099 10.65 9.899 11.775 C 9.946 5.382 3.75 -4.017 2 12'/></svg>");
+}
+.wBut{
+	background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='-5 -5 35 35' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' ><path d='M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2'/></svg>");
+}
+.weBut{
+	background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='-5 -5 35 35' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' ><line x1='8' y1='19' x2='8' y2='21'/><line x1='8' y1='13' x2='8' y2='15'/><line x1='16' y1='19' x2='16' y2='21'/><line x1='16' y1='13' x2='16' y2='15'/><line x1='12' y1='21' x2='12' y2='23'/><line x1='12' y1='15' x2='12' y2='17'/><path d='M20 16.58A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25'/></svg>");
+}
+.eBut{
+	background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='-5 -5 35 35' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' ><path d='M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7'/><path d='M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z'/></svg>");
+}
+#bottomButtons span{
+	height: 50px;
+    min-width: 30px;
+    text-align: center;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: inline-block;
+}
+#dlmapscont img{
+	max-width:20%;
+}
+#onlineDiv{
+	position:fixed;
+	bottom:20;
+	left:calc(50% - 100px);
+	width:200px;
+	background-color:rgba(0,0,0,0.3);
+	color:rgba(200,200,200,0.5);
+	text-align:center;
+	margin:5px;
+	font-size:1.5em;
+}
+#loginButton span{
+	padding:5px;
+}
